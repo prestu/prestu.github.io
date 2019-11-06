@@ -34,14 +34,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[pycharm教育版永久破解]]></title>
-    <url>%2F2019%2F10%2F22%2Fpycharm%E6%95%99%E8%82%B2%E7%89%88%E6%B0%B8%E4%B9%85%E7%A0%B4%E8%A7%A3%2F</url>
-    <content type="text"><![CDATA[pycharm教育版，是python常用的一种开发工具，能大大提高我们的编程效率，因为他功能强大，并且有自动补全的功能，但教育版的收费，网上应该有很多破解的方法，接下来就给大家提供一种永久破解的方法，但不一定都能破解成功，如果可以就给个好评，如果不可以的话，就在找其他的破解方法。 1.首先下载jar包 下载地址: https://pan.baidu.com/s/1Ug644fHbvoXukoD93si4qg, 提取码：1m8d 2.然后将该文件(jetbrains-agent.jar)解压到pycahrm的bin目录下 3.修改pycharm64.exe.vmoptions 文件 在文件的最后加上：-javaagent:该文件路径\bin\jetbrains-agent.jar 4.启动pycharm，选择license server激活方式，地址填入：http://jetbrains-license-server (应该会自动填充)，或者点击按钮：’Discover Server’ 来自动填充地址，完成激活。 5.进入pycharm，查看激活状态： 点击help–&gt;About,上面没有显示到期日期时间，就是永久激活了。 6.大功告成。]]></content>
-      <tags>
-        <tag>pycharm</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[this licenseK71U8DBPNE has been cancelled (pycharm)]]></title>
     <url>%2F2019%2F10%2F15%2Fthis%20licenseK71U8DBPNE%20has%20been%20cancelled%20(pycharm)%2F</url>
     <content type="text"><![CDATA[最近使用pycharm的时候，之前还好好的，突然就不行了，弹出个这个错误，’this licenseK71U8DBPNE has been cancelled’,以为只是注册码过期了，就又去找了几个注册码，发现注册码并没有过期，弹出的错误还是同样的错误，就百度了一下借鉴了一下大神的博客，原来问题在这,下面提供三种方法： 1.找到咱们的这个host文件，一般都放在C:\Windows\System32\drivers\etc目录下，打开这个host文件,在最后加上一句代码：0.0.0.0 account.jetbrains.com,如果原文件存在这句代码，会被注释掉，把注释去掉即可，然后重启pycharm 输入激活码即可。 2.传送门：专业版pycharm永久破解 3.前两种如果还是解决不了，，那就使用最后一种一方法了，解决办法是，如果是学生，可以用学校给我们注册的个人教育邮箱去注册，如果不知道，可以问下自己的同学，实在不行，问导员，他应该是知道的，现在pycharm是对学生及老师都是免费使用的，如果你不是学生，需要注册一个edu邮箱：点这里.注册之后就可以在激活pycharm时选择buy选项，然后英文根据提示完成操作即可。 以上就是我给大家的对于此问题的一些解决方法，不敢保证能解决所有问题，但还是可以解决大部分人的问题的，感谢支持，如果又哪里有问题或不懂的地方，下方留言哦。]]></content>
