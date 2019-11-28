@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="新创建的小程序项目，会默认生成一份demo代码，用于展示代码结构. 新建项目已经初始化并包含了一些简单的代码文件。最关键也是必不可少的，是 app.js、app.json、app.wxss 这三个。其中.js后缀的是脚本文件，.json后缀的文件是配置文件，.wxss后缀的是样式表文件。微信小程序会读取这些文件，并生成小程序实例。 下面我们简单了解这三个文件的功能，方便修改以及从头开发自己的微信小">
+<meta name="description" content="新创建的小程序项目，会默认生成一份demo代码，用于展示代码结构. 新建项目已经初始化并包含了一些简单的代码文件。最关键也是必不可少的，是 app.js，app.json，app.wxss 这三个。其中js`后缀的是脚本文件json后缀的文件是配置文件，后缀的是样式表文件。微信小程序会读取这些文件，并生成小程序实例下面我们简单了解这三个文件的功能，方便修改以及从头开发自己的微信小程序。">
 <meta name="keywords" content="微信小程序">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信小程序初识">
 <meta property="og:url" content="http://yoursite.com/2019/07/18/微信小程序初识/index.html">
 <meta property="og:site_name" content="prestu">
-<meta property="og:description" content="新创建的小程序项目，会默认生成一份demo代码，用于展示代码结构. 新建项目已经初始化并包含了一些简单的代码文件。最关键也是必不可少的，是 app.js、app.json、app.wxss 这三个。其中.js后缀的是脚本文件，.json后缀的文件是配置文件，.wxss后缀的是样式表文件。微信小程序会读取这些文件，并生成小程序实例。 下面我们简单了解这三个文件的功能，方便修改以及从头开发自己的微信小">
+<meta property="og:description" content="新创建的小程序项目，会默认生成一份demo代码，用于展示代码结构. 新建项目已经初始化并包含了一些简单的代码文件。最关键也是必不可少的，是 app.js，app.json，app.wxss 这三个。其中js`后缀的是脚本文件json后缀的文件是配置文件，后缀的是样式表文件。微信小程序会读取这些文件，并生成小程序实例下面我们简单了解这三个文件的功能，方便修改以及从头开发自己的微信小程序。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-18T08:12:42.000Z">
+<meta property="og:updated_time" content="2019-11-28T04:30:47.479Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微信小程序初识">
-<meta name="twitter:description" content="新创建的小程序项目，会默认生成一份demo代码，用于展示代码结构. 新建项目已经初始化并包含了一些简单的代码文件。最关键也是必不可少的，是 app.js、app.json、app.wxss 这三个。其中.js后缀的是脚本文件，.json后缀的文件是配置文件，.wxss后缀的是样式表文件。微信小程序会读取这些文件，并生成小程序实例。 下面我们简单了解这三个文件的功能，方便修改以及从头开发自己的微信小">
+<meta name="twitter:description" content="新创建的小程序项目，会默认生成一份demo代码，用于展示代码结构. 新建项目已经初始化并包含了一些简单的代码文件。最关键也是必不可少的，是 app.js，app.json，app.wxss 这三个。其中js`后缀的是脚本文件json后缀的文件是配置文件，后缀的是样式表文件。微信小程序会读取这些文件，并生成小程序实例下面我们简单了解这三个文件的功能，方便修改以及从头开发自己的微信小程序。">
 
 
 
@@ -302,7 +302,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="范成恒">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/blog_image.jpg">
+      <meta itemprop="image" content="/photos/images/blog_image.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -396,18 +396,24 @@
 
       
         <p>新创建的小程序项目，会默认生成一份demo代码，用于展示代码结构.</p>
-<p>新建项目已经初始化并包含了一些简单的代码文件。最关键也是必不可少的，是 app.js、app.json、app.wxss 这三个。其中<code>.js</code>后缀的是脚本文件，<code>.json</code>后缀的文件是配置文件，<code>.wxss</code>后缀的是样式表文件。微信小程序会读取这些文件，并生成小程序实例。</p>
-<p>下面我们简单了解这三个文件的功能，方便修改以及从头开发自己的微信小程序。<a id="more"></a></p>
-<p> 1、app.js是小程序的脚本代码。我们可以在这个文件中监听并处理小程序的生命周期函数、声明全局变量。调用框架提供的丰富的 API，如本例的同步存储及同步读取本地数据。</p>
-<p>2、 app.json 是对整个小程序的全局配置。我们可以在这个文件中配置小程序是由哪些页面组成，配置小程序的窗口背景色，配置导航条样式，配置默认标题。注意该文件不可添加任何注释。</p>
-<p>3、app.wxss 是整个小程序的公共样式表。我们可以在页面组件的 class 属性上直接使用 app.wxss 中声明的样式规则。</p>
-<p>　　我们注意到，在实例程序的代码中还有2个文件夹，一个是pages,一个是utils,其中utils是放通用工具类方法的一个文件夹，pages是存放所有页面的文件夹。我们着重讲一下这个pages.</p>
-<p>第五步：小程序页面文件构成</p>
+<p>新建项目已经初始化并包含了一些简单的代码文件。最关键也是必不可少的，是 app.js，app.json，app.wxss 这三个。其中js`后缀的是脚本文件json后缀的文件是配置文件，后缀的是样式表文件。微信小程序会读取这些文件，并生成小程序实例下面我们简单了解这三个文件的功能，方便修改以及从头开发自己的微信小程序。<a id="more"></a></p>
+<ol>
+<li><p>app.js是小程序的脚本代码。我们可以在这个文件中监听并处理小程序的生命周期函数、声明全局变量。调用框架提供的丰富的 API，如本例的同步存储及同步读取本地数据。</p>
+</li>
+<li><p>app.json 是对整个小程序的全局配置。我们可以在这个文件中配置小程序是由哪些页面组成，配置小程序的窗口背景色，配置导航条样式，配置默认标题。</p>
+</li>
+</ol>
+<p>​    注意：该文件不可添加任何注释。</p>
+<ol start="3">
+<li>app.wxss 是整个小程序的公共样式表。我们可以在页面组件的 class 属性上直接使用 app.wxss 中声明的样式规则。</li>
+</ol>
+<p>我们注意到，在实例程序的代码中还有2个文件夹，一个是pages，一个是utils，其中utils是放通用工具类方法的一个文件夹，pages是存放所有页面的文件夹。我们着重讲一下这个pages。</p>
+<p>小程序页面文件构成</p>
 <p>　　在这个示例中，我们有两个页面，index 页面和 logs 页面，即欢迎页和小程序启动日志的展示页，他们都在 pages 目录下。微信小程序中的每一个页面的【路径+页面名】都需要写在 app.json 的 pages 中，且 pages 中的第一个页面是小程序的首页。</p>
-<p> 每一个小程序页面是由同路径下同名的四个不同后缀文件组成的，如：index.js、index.wxml、index.wxss、index.json。<code>.js</code>后缀的文件是脚本文件，<code>.json</code>后缀的文件是配置文件，<code>.wxss</code>后缀的是样式表文件，<code>.wxml</code>后缀的文件是页面结构文件。</p>
+<p> 每一个小程序页面是由同路径下同名的四个不同后缀文件组成的，如：index.js、index.wxml、index.wxss、index.json。.js<code>后缀的文件是脚本文件，.</code>json<code>后缀的文件是配置文件，</code>.wxss<code>后缀的是样式表文件，</code>.wxml`后缀的文件是页面结构文件。</p>
 <p> index.wxml 是页面的结构文件：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.wxml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"userinfo"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">wx:if</span>=<span class="string">"&#123;&#123;!hasUserInfo &amp;&amp; canIUse&#125;&#125;"</span> <span class="attr">open-type</span>=<span class="string">"getUserInfo"</span> <span class="attr">bindgetuserinfo</span>=<span class="string">"getUserInfo"</span>&gt;</span> 获取头像昵称 <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">block</span> <span class="attr">wx:else</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">image</span> <span class="attr">bindtap</span>=<span class="string">"bindViewTap"</span> <span class="attr">class</span>=<span class="string">"userinfo-avatar"</span> <span class="attr">src</span>=<span class="string">"&#123;&#123;userInfo.avatarUrl&#125;&#125;"</span> <span class="attr">mode</span>=<span class="string">"cover"</span>&gt;</span><span class="tag">&lt;/<span class="name">image</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"userinfo-nickname"</span>&gt;</span>&#123;&#123;userInfo.nickName&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">block</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">"usermotto"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"user-motto"</span>&gt;</span>&#123;&#123;motto&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>本例中使用了view,image,<code>text、</code>button等<code>组件</code>来搭建页面结构，绑定数据和交互处理函数。</p>
+<p>本例中使用了view，image，text，button等<code>组件</code>来搭建页面结构，绑定数据和交互处理函数。</p>
 <p> index.js 是页面的脚本文件，在这个文件中我们可以监听并处理页面的生命周期函数、获取小程序实例，声明并处理数据，响应页面交互事件等。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//index.js</span></span><br><span class="line"><span class="comment">//获取应用实例</span></span><br><span class="line"><span class="keyword">const</span> app = getApp()</span><br><span class="line"></span><br><span class="line">Page(&#123;</span><br><span class="line">data: &#123;</span><br><span class="line">motto: <span class="string">'Hello World'</span>,</span><br><span class="line">userInfo: &#123;&#125;,</span><br><span class="line">hasUserInfo: <span class="literal">false</span>,</span><br><span class="line">canIUse: wx.canIUse(<span class="string">'button.open-type.getUserInfo'</span>)</span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">//事件处理函数</span></span><br><span class="line">bindViewTap: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">wx.navigateTo(&#123;</span><br><span class="line">url: <span class="string">'../logs/logs'</span></span><br><span class="line">&#125;)</span><br><span class="line">&#125;,</span><br><span class="line">onLoad: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="keyword">if</span> (app.globalData.userInfo) &#123;</span><br><span class="line"><span class="keyword">this</span>.setData(&#123;</span><br><span class="line">userInfo: app.globalData.userInfo,</span><br><span class="line">hasUserInfo: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">this</span>.data.canIUse)&#123;</span><br><span class="line"><span class="comment">// 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回</span></span><br><span class="line"><span class="comment">// 所以此处加入 callback 以防止这种情况</span></span><br><span class="line">app.userInfoReadyCallback = <span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line"><span class="keyword">this</span>.setData(&#123;</span><br><span class="line">userInfo: res.userInfo,</span><br><span class="line">hasUserInfo: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line"><span class="comment">// 在没有 open-type=getUserInfo 版本的兼容处理</span></span><br><span class="line">wx.getUserInfo(&#123;</span><br><span class="line">success: <span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">app.globalData.userInfo = res.userInfo</span><br><span class="line"><span class="keyword">this</span>.setData(&#123;</span><br><span class="line">userInfo: res.userInfo,</span><br><span class="line">hasUserInfo: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br><span class="line">&#125;,</span><br><span class="line">getUserInfo: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line"><span class="built_in">console</span>.log(e)</span><br><span class="line">app.globalData.userInfo = e.detail.userInfo</span><br><span class="line"><span class="keyword">this</span>.setData(&#123;</span><br><span class="line">userInfo: e.detail.userInfo,</span><br><span class="line">hasUserInfo: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>index.wxss 是页面的样式表：</p>
@@ -419,7 +425,7 @@
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--logs.wxml--&gt;</span><br><span class="line">&lt;view class="container log-list"&gt;</span><br><span class="line">  &lt;block wx:for-items="&#123;&#123;logs&#125;&#125;" wx:for-item="log"&gt;</span><br><span class="line">    &lt;text class="log-item"&gt;&#123;&#123;index + 1&#125;&#125;. &#123;&#123;log&#125;&#125;&lt;/text&gt;</span><br><span class="line">  &lt;/block&gt;</span><br><span class="line">&lt;/view&gt;</span><br></pre></td></tr></table></figure>
 <p> logs 页面使用 block 控制标签来组织代码，在 <code>&lt;/block&gt;</code> 上使用 <a href="https://mp.weixin.qq.com/debug/wxadoc/dev/framework/view/wxml/list.html?t=1474644083132#block-wxfor" target="_blank" rel="noopener"><code>wx:for-items</code></a> 绑定 <code>logs</code> 数据，并将 <code>logs</code> 数据循环展开节点</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//logs.js</span></span><br><span class="line"><span class="keyword">var</span> util = <span class="built_in">require</span>(<span class="string">'../../utils/util.js'</span>)</span><br><span class="line">Page(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    logs: []</span><br><span class="line">  &#125;,</span><br><span class="line">  onLoad: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.setData(&#123;</span><br><span class="line">      logs: (wx.getStorageSync(<span class="string">'logs'</span>) || []).map(<span class="function"><span class="keyword">function</span> (<span class="params">log</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> util.formatTime(<span class="keyword">new</span> <span class="built_in">Date</span>(log))</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>第五步：手机预览</p>
+<p>手机预览</p>
 <p>点击开发工具的顶部工具栏中的”预览”，即可生成预览二维码，用微信扫码后即可在微信客户端中预览体验</p>
 <p>以上便是微信小程序前端开发的基本流程，而实际上要做一个内容可以更新的小程序，单有前端开发是远远不够的，还需要后台开发。后台开发与web开发的后台基本无异，可以选择用java、php、nodejs等任一语言，有一点需要注意的是小程序后台服务器必须是https协议的，这就要求必须购买云服务器并将后台服务器设置成https服务。</p>
 
@@ -555,7 +561,7 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image" src="/images/blog_image.jpg" alt="范成恒">
+              <img class="site-author-image" itemprop="image" src="/photos/images/blog_image.jpg" alt="范成恒">
             
               <p class="site-author-name" itemprop="name">范成恒</p>
               <p class="site-description motion-element" itemprop="description"></p>
@@ -1091,7 +1097,7 @@
 
                   // select top N slices in content
 
-                  var upperBound = parseInt('1');
+                  var upperBound = parseInt('');
                   if (upperBound >= 0) {
                     slicesOfContent = slicesOfContent.slice(0, upperBound);
                   }
@@ -1158,7 +1164,7 @@
             }
           }
 
-          if ('auto' === 'auto') {
+          if ('auto' === '') {
             input.addEventListener('input', inputEventFunction);
           } else {
             $('.search-icon').click(inputEventFunction);

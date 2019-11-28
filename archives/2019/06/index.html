@@ -411,7 +411,7 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image" src="/images/blog_image.jpg" alt="范成恒">
+              <img class="site-author-image" itemprop="image" src="/photos/images/blog_image.jpg" alt="范成恒">
             
               <p class="site-author-name" itemprop="name">范成恒</p>
               <p class="site-description motion-element" itemprop="description"></p>
@@ -932,7 +932,7 @@
 
                   // select top N slices in content
 
-                  var upperBound = parseInt('1');
+                  var upperBound = parseInt('');
                   if (upperBound >= 0) {
                     slicesOfContent = slicesOfContent.slice(0, upperBound);
                   }
@@ -999,7 +999,7 @@
             }
           }
 
-          if ('auto' === 'auto') {
+          if ('auto' === '') {
             input.addEventListener('input', inputEventFunction);
           } else {
             $('.search-icon').click(inputEventFunction);
