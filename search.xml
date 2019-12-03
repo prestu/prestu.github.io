@@ -1,6 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>MySQL5.7-win32安装教程</title>
+    <url>/2019/12/03/MySQL5-7-win32%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<p>mysql是编程中比较热门的一个关系型数据库，现在版本已经更新到了8.X版本了，但是新版本更改了很多东西，不太适合新手一上来就用8.X，不是很友好，还是推荐用5.6或5.7版本的，下面教大家怎样安装5.7.19版本的mysql<a id="more"></a></p>
+<p><strong>1.下载.msi文件。</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">永久链接：https://pan.baidu.com/s/1-x7ny6GayxyCYkz2pke26g </span><br><span class="line">提取码：dza1</span><br></pre></td></tr></table></figure>
+<p>2.安装。</p>
+<p>如果你不更改路径，就直接双击上面下载的文件，一直下一步就ok了，如果你想更该路径，想放在特定的文件夹，那就在安装过程中，有custom选项，点击然后改为自己创建好的文件夹即可。</p>
+<p><strong>3.配置环境变量。</strong></p>
+<p>新增系统变量：</p>
+<p>键名：mysql(自己定义)</p>
+<p>值：C:\Program Files\MySQL\MySQL Server 5.7(即自己的mysql安装目录)</p>
+<p><img src="/images/新增环境变量.png" alt="新增环境变量"></p>
+<p>然后在Path中添加：%mysql%\bin，注意Path中不同值之间的“；”符号不能省略(mysql就是刚新增的键名)</p>
+<p><strong>4.配置my.ini文件</strong>。</p>
+<p>因为这个版本不自动生成my.ini文件，经常有同学问根据百度某某的教程让修改my.ini文件，我的怎么没有呀，就是因为这个原因。</p>
+<p>所以需要自己新建一个.</p>
+<p>可以先新建一个my.txt文件，然后通过重命名修改文件后缀为.ini，以前的版本解压后或许会存在my-default.ini文件，但是5.7.19版本没有，因此要自己手动创建该文件.</p>
+<p>文件的内容如下：(注意：文件夹之间用“/”而不是“\”,否则在下面的操作中可能会出错)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">port = 3306</span><br><span class="line">basedir=C:/Program Files/MySQL/MySQL Server 5.7</span><br><span class="line">datadir=C:/Program Files/MySQL/MySQL Server 5.7/data</span><br><span class="line">max_connections=200</span><br><span class="line">character-set-server=utf8</span><br><span class="line">default-storage-engine=INNODB</span><br><span class="line">sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES</span><br><span class="line">[mysql]</span><br><span class="line">default-character-set=utf8</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pip配置.png" alt="pip配置"></p>
+<p>编辑好my.ini文件之后，将my.ini文件放到C:/Program Files/MySQL/MySQL Server 5.7目录下</p>
+<p><strong>5..以管理员身份打开cmd命令窗口，将目录切换到MySQL的安装目录的bin目录下。</strong></p>
+<p>以管理员方式打开cmd:</p>
+<p>​    点击电脑左下角的搜索，输入‘cmd’，然后会出现命令提示符程序，然后鼠标放上面—-&gt;右键—-&gt;以管理员身份进入.</p>
+<p><img src="/images/cmd管理员.png" alt="cmd管理员"></p>
+<p>将目录切换到MySQL的安装目录的bin目录下:</p>
+<p>打开cmd之后，输入:cd C:/Program Files/MySQL/MySQL Server 5.7/bin<strong>(</strong>如果不行将’/‘ 换成 ‘\‘ <strong>)</strong></p>
+<p>每次进入还要切换目录比较麻烦，另一种方式就不用每次都要进入bin目录了。</p>
+<p>就是配置一下用户环境变量，将bin目录加到环境变量中即可，这样打开cmd，就可以直接进行操作了，不需要进行切换目录了.</p>
+<p><img src="/images/bin添加环境变量.png" alt="bin添加环境变量"></p>
+<p><strong>6.执行以下语句进行MySQL的安装。</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">mysqld -install</span><br></pre></td></tr></table></figure>
+<p> 执行命令后提示：Service successfully installed. 表示安装成功</p>
+<p><strong>7.执行以下语句进行MySQL的初始化</strong>。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">mysqld --initialize-insecure --user=mysql</span><br></pre></td></tr></table></figure>
+<p> 执行命令后会在MySQL的安装目录下生成data目录并创建root用户。</p>
+<p> <strong>8.执行以下命令以启动mysql服务。</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">net start mysql</span><br></pre></td></tr></table></figure>
+<p> 执行后会有如下提示：<br> MySQL服务正在启动..</p>
+<p> MySQL服务已经启动成功。</p>
+<p><strong>9.启动MySQL之后，root用户的密码为空，设置密码。</strong></p>
+<p>命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql -u root -p password 新密码</span><br><span class="line">Enter password: 旧密码</span><br></pre></td></tr></table></figure>
+<p> 需要输入旧密码时，由于旧密码为空，所以直接回车即可。</p>
+<p><strong>10.安装成功！！！大功告成！！！</strong></p>
+<p>最后，如果安装过程中出现任何解决不了的问题，下方留言哦。</p>
+]]></content>
+      <tags>
+        <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>寒假工宣传</title>
     <url>/2019/11/03/%E5%AF%92%E5%81%87%E5%B7%A5%E5%AE%A3%E4%BC%A0/</url>
     <content><![CDATA[<font color="Tomato" size="6" face="黑体"><center><strong>欢迎您的加入！</strong></center></font> <a id="more"></a><font color="Black" size="4">——–<strong>你是否还在为每月的生活费向父母开口而感到一丝羞愧？你是否还在因没有任何工作经验而为毕业后的前途担忧？你是否还在为了自己的恋爱经费节衣缩食？你是否又对一件自己非常喜欢的东西因其昂贵的价格望而却步？<br>——–那么，你找到我就对了，这是一个千载难逢的机会啊(装个逼装个逼，哈哈哈)。<br>——–用自己的努力让父母少流些汗水，用自己的双手铺垫自己的前途，用自己的心血让你的她拥有更多甜蜜，让你喜欢的东西安稳在你的怀里。<br>——–我们常年与上海，深圳，昆山，杭州等大都市的正规公司合作，多次顺利进行暑假工和寒假工的输送，待遇优厚，且不收取任何中介费用，保证学生利益，让学生的利益最大化，也绝对会保证学生的安全，只要你敢相信我，那么你一定可以得到你想要的。<br>——–我们为什么主打餐饮呢，因为餐饮并不比进厂工资低，甚至比你进厂还要高，最主要是餐饮工作环境好，伙食好，一般都是管吃管住的，并且没有进厂那么累，还有就是，在大城市这些高档餐厅好多都是“大人物”来吃饭，在你工作时可能遇见像马云这样的“大人物”，慧眼识人才，可能就让你跟着他混了，哈哈哈，开个玩笑(也有可能之真的哦)，当然这只是题外话，既然选择了跟着我们，就一定要踏踏实实的去干，加油，你是最棒的! ! !<br></strong></font>

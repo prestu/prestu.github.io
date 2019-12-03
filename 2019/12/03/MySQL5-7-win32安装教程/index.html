@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="bfs,记录路径,">
+  <meta name="keywords" content="mysql,">
 
 
 
@@ -79,18 +79,23 @@
 
 
 
-<meta name="description" content="试题 E: 迷宫本题总分：15 分【问题描述】下图给出了一个迷宫的平面图，其中标记为 1 的为障碍，标记为 0 的为可以通行的地方。010000000100001001110000迷宫的入口为左上角，出口为右下角，在迷宫中，只能从一个位置走到这">
-<meta name="keywords" content="bfs,记录路径">
+<meta name="description" content="mysql是编程中比较热门的一个关系型数据库，现在版本已经更新到了8.X版本了，但是新版本更改了很多东西，不太适合新手一上来就用8.X，不是很友好，还是推荐用5.6或5.7版本的，下面教大家怎样安装5.7.19版本的mysql">
+<meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2019蓝桥杯-E题:迷宫">
-<meta property="og:url" content="http://yoursite.com/2019/03/25/迷宫/index.html">
+<meta property="og:title" content="MySQL5.7-win32安装教程">
+<meta property="og:url" content="http://yoursite.com/2019/12/03/MySQL5-7-win32安装教程/index.html">
 <meta property="og:site_name" content="prestu">
-<meta property="og:description" content="试题 E: 迷宫本题总分：15 分【问题描述】下图给出了一个迷宫的平面图，其中标记为 1 的为障碍，标记为 0 的为可以通行的地方。010000000100001001110000迷宫的入口为左上角，出口为右下角，在迷宫中，只能从一个位置走到这">
+<meta property="og:description" content="mysql是编程中比较热门的一个关系型数据库，现在版本已经更新到了8.X版本了，但是新版本更改了很多东西，不太适合新手一上来就用8.X，不是很友好，还是推荐用5.6或5.7版本的，下面教大家怎样安装5.7.19版本的mysql">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-26T07:44:58.000Z">
+<meta property="og:image" content="http://yoursite.com/images/新增环境变量.png">
+<meta property="og:image" content="http://yoursite.com/images/pip配置.png">
+<meta property="og:image" content="http://yoursite.com/images/cmd管理员.png">
+<meta property="og:image" content="http://yoursite.com/images/bin添加环境变量.png">
+<meta property="og:updated_time" content="2019-12-03T03:06:59.259Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="2019蓝桥杯-E题:迷宫">
-<meta name="twitter:description" content="试题 E: 迷宫本题总分：15 分【问题描述】下图给出了一个迷宫的平面图，其中标记为 1 的为障碍，标记为 0 的为可以通行的地方。010000000100001001110000迷宫的入口为左上角，出口为右下角，在迷宫中，只能从一个位置走到这">
+<meta name="twitter:title" content="MySQL5.7-win32安装教程">
+<meta name="twitter:description" content="mysql是编程中比较热门的一个关系型数据库，现在版本已经更新到了8.X版本了，但是新版本更改了很多东西，不太适合新手一上来就用8.X，不是很友好，还是推荐用5.6或5.7版本的，下面教大家怎样安装5.7.19版本的mysql">
+<meta name="twitter:image" content="http://yoursite.com/images/新增环境变量.png">
 
 
 
@@ -120,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/25/迷宫/">
+  <link rel="canonical" href="http://yoursite.com/2019/12/03/MySQL5-7-win32安装教程/">
 
 
 
 
 
-  <title>2019蓝桥杯-E题:迷宫 | prestu</title>
+  <title>MySQL5.7-win32安装教程 | prestu</title>
   
 
 
@@ -297,7 +302,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/迷宫/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/03/MySQL5-7-win32安装教程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="范成恒">
@@ -314,7 +319,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">2019蓝桥杯-E题:迷宫</h1>
+          <h1 class="post-title" itemprop="name headline">MySQL5.7-win32安装教程</h1>
         
 
         <div class="post-meta">
@@ -326,8 +331,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-25T16:45:36+08:00">
-                2019-03-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-03T10:06:23+08:00">
+                2019-12-03
               </time>
             
 
@@ -358,7 +363,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  790字
+                  899字
                 </span>
               
 
@@ -395,17 +400,50 @@
       
 
       
-        <p>试题 E: 迷宫<br>本题总分：15 分<br>【问题描述】<br>下图给出了一个迷宫的平面图，其中标记为 1 的为障碍，标记为 0 的为可<br>以通行的地方。<br>010000<br>000100<br>001001<br>110000<br>迷宫的入口为左上角，出口为右下角，在迷宫中，只能从一个位置走到这</p>
-<a id="more"></a>
-<p>个它的上、下、左、右四个方向之一。对于上面的迷宫，从入口开始，可</p>
-<p>以按DRRURRDDDR 的顺序通过迷宫，一共 10 步。其中 D、U、L、R 分别</p>
-<p>表示向下、向上、向左、向右走。对于下面这个更复杂的迷宫（30 行 50 列），</p>
-<p>请找出一种通过迷宫的方式，其使用的步数最少，在步数最少的前提下，</p>
-<p>请找出字典序最小的一个作为答案。请注意在字典序中D&lt;L&lt;R&lt;U。</p>
-<p>01010101001011001001010110010110100100001000101010<br>00001000100000101010010000100000001001100110100101<br>01111011010010001000001101001011100011000000010000<br>01000000001010100011010000101000001010101011001011<br>00011111000000101000010010100010100000101100000000<br>11001000110101000010101100011010011010101011110111<br>00011011010101001001001010000001000101001110000000<br>10100000101000100110101010111110011000010000111010<br>00111000001010100001100010000001000101001100001001<br>11000110100001110010001001010101010101010001101000<br>00010000100100000101001010101110100010101010000101<br>11100100101001001000010000010101010100100100010100<br>00000010000000101011001111010001100000101010100011<br>10101010011100001000011000010110011110110100001000<br>10101010100001101010100101000010100000111011101001<br>10000000101100010000101100101101001011100000000100<br>10101001000000010100100001000100000100011110101001<br>00101001010101101001010100011010101101110000110101<br>11001010000100001100000010100101000001000111000010<br>00001000110000110101101000000100101001001000011101<br>10100101000101000000001110110010110101101010100001<br>00101000010000110101010000100010001001000100010101<br>10100001000110010001000010101001010101011111010010<br>00000100101000000110010100101001000001000000000010<br>11010000001001110111001001000011101001011011101000<br>00000110100010001000100000001000011101000000110011<br>10101000101000100010001111100010101001010000001000<br>10000010100101001010110000000100101010001011101000<br>00111100001000010000000110111000000001000000001011<br>10000001100111010111010001000110111010101101111000<br>【答案提交】<br>这是一道结果填空的题，你只需要算出结果后提交即可。本题的结果为一<br>个字符串，包含四种字母 D、U、L、R，在提交答案时只填写这个字符串，填<br>写多余的内容将无法得分</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> inf=<span class="number">0x3f3f3f3f</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN=<span class="number">1000</span>+<span class="number">5</span>;</span><br><span class="line"><span class="keyword">int</span> n,m;</span><br><span class="line"><span class="keyword">int</span> dx[<span class="number">4</span>]=&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">-1</span>&#125;,dy[<span class="number">4</span>]=&#123;<span class="number">0</span>,<span class="number">-1</span>,<span class="number">1</span>,<span class="number">0</span>&#125;;<span class="comment">//D&lt;L&lt;R&lt;U,这样初始化,为了保证输出的路径是最小字典序 </span></span><br><span class="line"><span class="keyword">int</span> ans[MAXN][MAXN];<span class="comment">//记录是否被访问 </span></span><br><span class="line"><span class="keyword">int</span> dis[MAXN][MAXN],path[MAXN][MAXN];<span class="comment">//dis记录步数 ，数组path记录路径</span></span><br><span class="line"><span class="keyword">char</span> a[MAXN][MAXN];<span class="comment">//数组a是存迷宫</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">st</span>&#123;</span></span><br><span class="line">	<span class="keyword">int</span> x,y;</span><br><span class="line">&#125;; </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bfs</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;	</span><br><span class="line">	st s,ss;</span><br><span class="line">	<span class="built_in">memset</span>(ans,<span class="number">0</span>,<span class="keyword">sizeof</span>(ans));</span><br><span class="line">	<span class="built_in">memset</span>(dis,<span class="number">0</span>,<span class="keyword">sizeof</span>(dis));</span><br><span class="line">	<span class="built_in">memset</span>(path,<span class="number">0</span>,<span class="keyword">sizeof</span>(path));</span><br><span class="line">	<span class="built_in">queue</span>&lt;st&gt;que;</span><br><span class="line">	ans[x][y]=<span class="number">1</span>;</span><br><span class="line">	s.x=x; s.y=y;</span><br><span class="line">	que.push(s);</span><br><span class="line">	<span class="keyword">while</span>(!que.empty())</span><br><span class="line">	&#123;</span><br><span class="line">		s=que.front();</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;i++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> xx=s.x+dx[i];</span><br><span class="line">			<span class="keyword">int</span> yy=s.y+dy[i];</span><br><span class="line">			<span class="keyword">if</span>(xx&gt;=<span class="number">0</span>&amp;&amp;xx&lt;n&amp;&amp;yy&gt;=<span class="number">0</span>&amp;&amp;yy&lt;m&amp;&amp;ans[xx][yy]==<span class="number">0</span>&amp;&amp;a[xx][yy]==<span class="string">'0'</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				dis[xx][yy]=dis[s.x][s.y]+<span class="number">1</span>;<span class="comment">//记录步数 </span></span><br><span class="line">				path[xx][yy]=i+<span class="number">1</span>;<span class="comment">//记录上一步从哪过来的 </span></span><br><span class="line">				ans[xx][yy]=<span class="number">1</span>;</span><br><span class="line">				ss.x=xx,ss.y=yy;</span><br><span class="line">				que.push(ss);</span><br><span class="line">			&#125;</span><br><span class="line">		 &#125; </span><br><span class="line">		que.pop();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,dis[n<span class="number">-1</span>][m<span class="number">-1</span>]);<span class="comment">//输出z走到终点a[n-1][m-1]的最少步数 (题上没要求) </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="keyword">int</span> x ,<span class="keyword">int</span> y)</span><span class="comment">//利用递归输出路径 </span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(x==<span class="number">0</span>&amp;&amp;y==<span class="number">0</span>) <span class="keyword">return</span> ;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(path[x][y]==<span class="number">1</span>)&#123;</span><br><span class="line">		print(x<span class="number">-1</span>,y);<span class="built_in">cout</span>&lt;&lt;<span class="string">"D"</span>; <span class="comment">//等于1，即上一步向下走一步得到的 </span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(path[x][y]==<span class="number">2</span>)&#123;</span><br><span class="line">		print(x,y+<span class="number">1</span>);<span class="built_in">cout</span>&lt;&lt;<span class="string">"L"</span>;<span class="comment">//等于2，即上一步向左走一步得到的 </span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(path[x][y]==<span class="number">3</span>)&#123;</span><br><span class="line">		print(x,y<span class="number">-1</span>);<span class="built_in">cout</span>&lt;&lt;<span class="string">"R"</span>;<span class="comment">//等于3，即上一步向右走一步得到的 </span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(path[x][y]==<span class="number">4</span>)&#123;</span><br><span class="line">		print(x+<span class="number">1</span>,y);<span class="built_in">cout</span>&lt;&lt;<span class="string">"U"</span>;<span class="comment">//等于4，即上一步向上走一步得到的 </span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;n,&amp;m);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">"%s"</span>,a[i]); </span><br><span class="line">	bfs(<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">	print(n<span class="number">-1</span>,m<span class="number">-1</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">最短步数为：186</span><br><span class="line">DDDDRRURRRRRRDRRRRDDDLDDRDDDDDDDDDDDDRDDRRRURRUURRDDDDRDRRRRRRDRRURRDDDRRRRUURUUUUUUULULLUUUURRRRUULLLUUUULLUUULUURRURRURURRRDDRRRRRDDRRDDLLLDDRRDDRDDLDDDLLDDLLLDLDDDLDDRRRRRRRRRDDDDDDRR</span><br></pre></td></tr></table></figure>
+        <p>mysql是编程中比较热门的一个关系型数据库，现在版本已经更新到了8.X版本了，但是新版本更改了很多东西，不太适合新手一上来就用8.X，不是很友好，还是推荐用5.6或5.7版本的，下面教大家怎样安装5.7.19版本的mysql<a id="more"></a></p>
+<p><strong>1.下载.msi文件。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">永久链接：https://pan.baidu.com/s/1-x7ny6GayxyCYkz2pke26g </span><br><span class="line">提取码：dza1</span><br></pre></td></tr></table></figure>
+<p>2.安装。</p>
+<p>如果你不更改路径，就直接双击上面下载的文件，一直下一步就ok了，如果你想更该路径，想放在特定的文件夹，那就在安装过程中，有custom选项，点击然后改为自己创建好的文件夹即可。</p>
+<p><strong>3.配置环境变量。</strong></p>
+<p>新增系统变量：</p>
+<p>键名：mysql(自己定义)</p>
+<p>值：C:\Program Files\MySQL\MySQL Server 5.7(即自己的mysql安装目录)</p>
+<p><img src="/images/新增环境变量.png" alt="新增环境变量"></p>
+<p>然后在Path中添加：%mysql%\bin，注意Path中不同值之间的“；”符号不能省略(mysql就是刚新增的键名)</p>
+<p><strong>4.配置my.ini文件</strong>。</p>
+<p>因为这个版本不自动生成my.ini文件，经常有同学问根据百度某某的教程让修改my.ini文件，我的怎么没有呀，就是因为这个原因。</p>
+<p>所以需要自己新建一个.</p>
+<p>可以先新建一个my.txt文件，然后通过重命名修改文件后缀为.ini，以前的版本解压后或许会存在my-default.ini文件，但是5.7.19版本没有，因此要自己手动创建该文件.</p>
+<p>文件的内容如下：(注意：文件夹之间用“/”而不是“\”,否则在下面的操作中可能会出错)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">port = 3306</span><br><span class="line">basedir=C:/Program Files/MySQL/MySQL Server 5.7</span><br><span class="line">datadir=C:/Program Files/MySQL/MySQL Server 5.7/data</span><br><span class="line">max_connections=200</span><br><span class="line">character-set-server=utf8</span><br><span class="line">default-storage-engine=INNODB</span><br><span class="line">sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES</span><br><span class="line">[mysql]</span><br><span class="line">default-character-set=utf8</span><br></pre></td></tr></table></figure>
+<p><img src="/images/pip配置.png" alt="pip配置"></p>
+<p>编辑好my.ini文件之后，将my.ini文件放到C:/Program Files/MySQL/MySQL Server 5.7目录下</p>
+<p><strong>5..以管理员身份打开cmd命令窗口，将目录切换到MySQL的安装目录的bin目录下。</strong></p>
+<p>以管理员方式打开cmd:</p>
+<p>​    点击电脑左下角的搜索，输入‘cmd’，然后会出现命令提示符程序，然后鼠标放上面—-&gt;右键—-&gt;以管理员身份进入.</p>
+<p><img src="/images/cmd管理员.png" alt="cmd管理员"></p>
+<p>将目录切换到MySQL的安装目录的bin目录下:</p>
+<p>打开cmd之后，输入:cd C:/Program Files/MySQL/MySQL Server 5.7/bin<strong>(</strong>如果不行将’/‘ 换成 ‘\‘ <strong>)</strong></p>
+<p>每次进入还要切换目录比较麻烦，另一种方式就不用每次都要进入bin目录了。</p>
+<p>就是配置一下用户环境变量，将bin目录加到环境变量中即可，这样打开cmd，就可以直接进行操作了，不需要进行切换目录了.</p>
+<p><img src="/images/bin添加环境变量.png" alt="bin添加环境变量"></p>
+<p><strong>6.执行以下语句进行MySQL的安装。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld -install</span><br></pre></td></tr></table></figure>
+<p> 执行命令后提示：Service successfully installed. 表示安装成功</p>
+<p><strong>7.执行以下语句进行MySQL的初始化</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld --initialize-insecure --user=mysql</span><br></pre></td></tr></table></figure>
+<p> 执行命令后会在MySQL的安装目录下生成data目录并创建root用户。</p>
+<p> <strong>8.执行以下命令以启动mysql服务。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net start mysql</span><br></pre></td></tr></table></figure>
+<p> 执行后会有如下提示：<br> MySQL服务正在启动..</p>
+<p> MySQL服务已经启动成功。</p>
+<p><strong>9.启动MySQL之后，root用户的密码为空，设置密码。</strong></p>
+<p>命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p password 新密码</span><br><span class="line">Enter password: 旧密码</span><br></pre></td></tr></table></figure>
+<p> 需要输入旧密码时，由于旧密码为空，所以直接回车即可。</p>
+<p><strong>10.安装成功！！！大功告成！！！</strong></p>
+<p>最后，如果安装过程中出现任何解决不了的问题，下方留言哦。</p>
 
       
     </div>
@@ -452,9 +490,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/bfs/" rel="tag"># bfs</a>
-          
-            <a href="/tags/记录路径/" rel="tag"># 记录路径</a>
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
           
         </div>
       
@@ -467,8 +503,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/15/hello-world/" rel="next" title="hello world">
-                <i class="fa fa-chevron-left"></i> hello world
+              <a href="/2019/11/03/寒假工宣传/" rel="next" title="寒假工宣传">
+                <i class="fa fa-chevron-left"></i> 寒假工宣传
               </a>
             
           </div>
@@ -476,10 +512,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/27/HDU1232畅通工程（并查集)/" rel="prev" title="HDU1232畅通工程（并查集)">
-                HDU1232畅通工程（并查集) <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
