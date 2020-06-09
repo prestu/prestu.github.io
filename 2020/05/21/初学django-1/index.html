@@ -87,10 +87,15 @@
 <meta property="og:site_name" content="prestu">
 <meta property="og:description" content="在学习django之前，要进行一些准备：">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-21T13:18:53.200Z">
+<meta property="og:image" content="http://yoursite.com/images/安装virtualenv.png">
+<meta property="og:image" content="http://yoursite.com/images/创建虚拟环境.png">
+<meta property="og:image" content="http://yoursite.com/images/自动生成的文件夹.png">
+<meta property="og:image" content="http://yoursite.com/images/进入&退出虚拟环境.png">
+<meta property="og:updated_time" content="2020-06-09T08:29:35.840Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="初学django&lt;1&gt;">
 <meta name="twitter:description" content="在学习django之前，要进行一些准备：">
+<meta name="twitter:image" content="http://yoursite.com/images/安装virtualenv.png">
 
 
 
@@ -358,7 +363,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  318字
+                  809字
                 </span>
               
 
@@ -374,7 +379,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1分钟
+                  2分钟
                 </span>
               
             </div>
@@ -403,6 +408,45 @@
 <p>为了避免学习过程中，出现各种各样的报错，最好都用相同版本的语言，框架等。</p>
 <p><strong>安装虚拟环境：</strong></p>
 <p>&emsp;&emsp;在学习之前还要配置一个虚拟环境，给大家讲一下为啥要配置虚拟环境，比如说，如果老板A让你去维护一个用django1.0写个的web项目，而老板B让你维护django1.8版本的项目，而你电脑上却是django2.0版本的，因为版本不同，新旧版本不完全兼容，可能会出现各种未知报错，所以如果没有虚拟环境，还要将2.0的卸载掉，再去装1.0的去维护，然后卸载1.0的安装1.8的，而你之前电脑上有一些项目用django2.0开发的，再去维护又要折腾了，太麻烦了，恰好这个虚拟环境可以解决这种问题，可以在虚拟环境中安装1.0和1.8版本的去维护旧版本的项目，这样就不用来回卸载django了。</p>
+<p>安装virtualenv:</p>
+<p>pip3 install virtualenv</p>
+<p><img src="/images/安装virtualenv.png" alt></p>
+<p><strong>创建虚拟环境：</strong></p>
+<p>virtualenv [虚拟环境名字name]</p>
+<p>运行之后就会在当前文件夹自动生成一个名为name的文件夹</p>
+<p><img src="/images/创建虚拟环境.png" alt></p>
+<p><img src="/images/自动生成的文件夹.png" alt></p>
+<p><strong>进入环境：</strong></p>
+<p>虚拟环境创建好以后，就可以进入虚拟环境安装一些第三方包，进入到虚拟环境的Scripts文件夹下，然后执行activate，就进入i虚拟环境了，在虚拟环境中，进行安装三方库或卸载三方库都不会影响到外面的环境。</p>
+<p><strong>退出虚拟环境：</strong></p>
+<p>退出很简单，只需输入命令：deactivate</p>
+<p><img src="/images/进入&amp;退出虚拟环境.png" alt></p>
+<p><strong>指定python解释器进行创建虚拟环境：</strong></p>
+<p>为什么要指定解释器呢？</p>
+<p>因为有些项目需要用指定的解释器版本去维护项目，版本不同，他的一些功能可能维护方式不太一样，指定解释器版本可以减少一些不必要的bug</p>
+<p>命令：virtualenv -p C:python37\python.exe [virtualenv]</p>
+<p><strong>第二种创建虚拟环境：</strong></p>
+<p>virtualenvwrapper</p>
+<p><strong>安装虚拟环境：</strong></p>
+<p>pip3 install virtualenvwrapper-win(同时会安装virtualenv)</p>
+<p><strong>创建虚拟环境：</strong></p>
+<p>mkvirtualenv [name]</p>
+<p>创建成功之后会在当前目录下自动创建一个名为envs的文件夹，然后你创建的所有虚拟环境都会安装到这个目录下。</p>
+<p>如果你想将所有虚拟环境放到自己指定的文件夹，可以这样操作：</p>
+<p>在我的电脑—-&gt;右键—-&gt;属性—-&gt;高级系统设置—-&gt;环境变量 中添加一个参数 WORKON_HOME,然后将value值设置成你指定的文件夹路径即可。</p>
+<p><strong>切换到某个虚拟环境：</strong></p>
+<p>workon [name]</p>
+<p><strong>退出虚拟环境：</strong></p>
+<p>命令：deactivate</p>
+<p><strong>删除某个虚拟环境：</strong></p>
+<p>命令：rmvirtualenv [name]</p>
+<p><strong>列出所有的虚拟环境：</strong></p>
+<p>命令：lsvirtualenv(显示路径)</p>
+<p>命令：workon(不显示路径)</p>
+<p><strong>进入到虚拟环境的目录：</strong></p>
+<p>命令：cdvirtualenv</p>
+<p><strong>指定解释器版本创建虚拟环境：</strong></p>
+<p>mkvirtual –python==C:\python37\python.exe [name]</p>
 
       
     </div>
