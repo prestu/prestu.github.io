@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="django,">
 
 
 
@@ -79,14 +79,22 @@
 
 
 
+<meta name="description" content="上一节课已经教大家成功运行起来了django，这节课就教大家开发属于自己的web项目。">
+<meta name="keywords" content="django">
 <meta property="og:type" content="article">
 <meta property="og:title" content="初学django-3">
 <meta property="og:url" content="http://yoursite.com/2020/06/10/初学django-3/index.html">
 <meta property="og:site_name" content="prestu">
+<meta property="og:description" content="上一节课已经教大家成功运行起来了django，这节课就教大家开发属于自己的web项目。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-06-10T03:30:13.540Z">
+<meta property="og:image" content="http://yoursite.com/images/pycharm创建app.png">
+<meta property="og:image" content="http://yoursite.com/images/终端创建app.png">
+<meta property="og:image" content="http://yoursite.com/images/传参运行结果.png">
+<meta property="og:updated_time" content="2020-06-13T09:47:32.211Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="初学django-3">
+<meta name="twitter:description" content="上一节课已经教大家成功运行起来了django，这节课就教大家开发属于自己的web项目。">
+<meta name="twitter:image" content="http://yoursite.com/images/pycharm创建app.png">
 
 
 
@@ -354,7 +362,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0字
+                  1.1k字
                 </span>
               
 
@@ -370,7 +378,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1分钟
+                  4分钟
                 </span>
               
             </div>
@@ -391,7 +399,37 @@
       
 
       
-        
+        <p>上一节课已经教大家成功运行起来了django，这节课就教大家开发属于自己的web项目。<a id="more"></a></p>
+<p>首先使用pycharm打开上一节创建的django项目，然后点击下面的Terminal 然后输入命令：python manage.py startapp [name] (name是自己创建的app名称，以book为例吧)。</p>
+<p><img src="/images/pycharm创建app.png" alt></p>
+<p>也可以在电脑终端进入到的创建的项目中，然后切换一个虚拟环境，再运行：python manage.py startapp book即可创建。</p>
+<p>最后输入命令：deactivate退出虚拟环境。</p>
+<p><img src="/images/终端创建app.png" alt></p>
+<p><strong>视图：</strong></p>
+<p>视图一般写在创建的app的views.py中，并且视图的第一个参数永远是request(一个HttpRequest)对象，这个对象存储了请求过来的所有信息，包括携带的参数以及一些头部信息等，在视图中，一般是完成逻辑相关的操作，比如这个请求是添加一篇博客，那么可以通过request来接受这些数据，然后存储到数据库中，最后再把执行的结果返回给浏览器，视图函数的返回值必须是HttpResponse对象或子类的对象。</p>
+<p>如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">book</span><span class="params">(request)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> HttpResponse(<span class="string">'图书首页'</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>URL映射：</strong></p>
+<p>视图写完以后，要与URL进行映射，也就是用户在浏览器中输入URL时可以到这个视图函数。在用户输入某个URL，请求我们网站时，django就会从项目的urls.py中寻找对应的视图，在urls.py中有一个urlpatterns变量，以后django就会从这个变量中读取所有的匹配规则，匹配规则需要使用django.url中的path函数进行包裹，这个函数会根据传入的参数返回urlpatterns或者是urlResolver的对象。</p>
+<p>如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> book <span class="keyword">import</span> views</span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'admin/'</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">'book/'</span>,views.book)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>这样运行django项目后， http:/ /127.0.0.1:8000/就访问不了了，因为urls.py中没有对应的url，访问 http:/ /127.0.0.1:8000/book/就可以看到页面显示”<strong>图书首页</strong>“了。</p>
+<p>有同学可能可能会问，为什么在没有添加上面这些代码时 http:/ /127.0.0.1:8000/就可以访问成功呢，其实那是django自带的页面，告诉你的django项目正常运行起来了，这是django的初始状态，没有添加任何url的项目，只要添加任何的url，原始页面就不存在了，如果你想 http:// 127.0.0.1:8000/该网址可以正常访问，你可以在urlparterns变量中添加一个下面这样的url即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">比如：</span><br><span class="line">path(<span class="string">''</span>,views.book)</span><br></pre></td></tr></table></figure>
+<p><strong>URL中添加参数：</strong></p>
+<p><strong>url映射：</strong></p>
+<p>1.为什么回去urls.py文件中去寻找映射呢”</p>
+<p>是因为在setting,py文件中配置了’ROOT_URLCONF’为’urls.py’。这样django的url都会去urls.py中去寻找。</p>
+<p>2.要记住在’urls.py’中的映射，都要放在’urlpatterns’这个变量中。</p>
+<p><strong>url传递参数</strong>：</p>
+<p>1.采用在url中使用变量的方式：在path的第一个参数中，使用’&lt;参数名&gt;’的方式可以传递参数。然后在视图函数中也要写一个函数，视图函数中的函数必须和url中的参数名称保持一致，不然找不到这个这个参数，另外，url中可以传递多个参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#views.py</span></span><br><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">book</span><span class="params">(request,book_id)</span>:</span></span><br><span class="line">    text=<span class="string">'您的图书代码是:%s'</span>%(book_id)</span><br><span class="line">    <span class="keyword">return</span> HttpResponse(text)</span><br><span class="line"></span><br><span class="line"><span class="comment">#urls.py   </span></span><br><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> book <span class="keyword">import</span> views</span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'admin/'</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">'book/&lt;book_id&gt;/'</span>,views.book),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>输入http:/ /127.0.0.1:8000/book/&lt; id &gt;即可访问。(‘&lt;&gt;’不用加，id取任意值)</p>
+<p><img src="/images/传参运行结果.png" alt></p>
+<p>2.采用查询字符串的方式：在url中，不需要单独的匹配查询字符串的部分.只需要在视图函数中使用’request.GET.get(‘参数名称’)’的方式来获取。示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#views.py</span></span><br><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">book</span><span class="params">(request)</span>:</span></span><br><span class="line">    book_id=request.GET.get(<span class="string">'id'</span>)</span><br><span class="line">    <span class="comment">#或者book_id=request.GET['id']</span></span><br><span class="line">    text=<span class="string">'您的图书代码是:%s'</span>%(book_id)</span><br><span class="line">    <span class="keyword">return</span> HttpResponse(text)</span><br><span class="line"></span><br><span class="line"><span class="comment">#urls.py   </span></span><br><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> book <span class="keyword">import</span> views</span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'admin/'</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">'book/'</span>,views.book),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>输入http:/ /127.0.0.1:8000/book/? id =&lt; num &gt;即可访问。(‘&lt;&gt;’不用加，num取任意值)</p>
+
       
     </div>
     
@@ -434,6 +472,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/django/" rel="tag"># django</a>
+          
+        </div>
       
 
       
