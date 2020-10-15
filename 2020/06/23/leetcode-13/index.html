@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="题目描述：题目链接">
+<meta name="description" content="13. 罗马数字转整数">
 <meta name="keywords" content="python,leetcode">
 <meta property="og:type" content="article">
 <meta property="og:title" content="leetcode-13">
 <meta property="og:url" content="http://yoursite.com/2020/06/23/leetcode-13/index.html">
 <meta property="og:site_name" content="prestu">
-<meta property="og:description" content="题目描述：题目链接">
+<meta property="og:description" content="13. 罗马数字转整数">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-09-07T08:42:14.616Z">
+<meta property="og:updated_time" content="2020-10-15T03:40:28.061Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="leetcode-13">
-<meta name="twitter:description" content="题目描述：题目链接">
+<meta name="twitter:description" content="13. 罗马数字转整数">
 
 
 
@@ -395,8 +395,7 @@
       
 
       
-        <p><strong>题目描述</strong>：<a href="https://leetcode-cn.com/problems/roman-to-integer/" target="_blank" rel="noopener">题目链接</a><a id="more"></a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。</span><br><span class="line"></span><br><span class="line">字符          数值</span><br><span class="line">I             1</span><br><span class="line">V             5</span><br><span class="line">X             10</span><br><span class="line">L             50</span><br><span class="line">C             100</span><br><span class="line">D             500</span><br><span class="line">M             1000</span><br><span class="line">例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。</span><br><span class="line"></span><br><span class="line">通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：</span><br><span class="line"></span><br><span class="line">I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。</span><br><span class="line">X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。 </span><br><span class="line">C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。</span><br><span class="line">给定一个罗马数字，将其转换成整数。输入确保在 1 到 3999 的范围内。</span><br><span class="line">输入：II</span><br><span class="line">输出：2</span><br></pre></td></tr></table></figure>
+        <h4 id="13-罗马数字转整数"><a href="#13-罗马数字转整数" class="headerlink" title="13. 罗马数字转整数"></a><a href="https://leetcode-cn.com/problems/roman-to-integer/" target="_blank" rel="noopener">13. 罗马数字转整数</a><a id="more"></a></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。</span><br><span class="line"></span><br><span class="line">字符          数值</span><br><span class="line">I             1</span><br><span class="line">V             5</span><br><span class="line">X             10</span><br><span class="line">L             50</span><br><span class="line">C             100</span><br><span class="line">D             500</span><br><span class="line">M             1000</span><br><span class="line">例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。</span><br><span class="line"></span><br><span class="line">通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：</span><br><span class="line"></span><br><span class="line">I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。</span><br><span class="line">X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。 </span><br><span class="line">C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。</span><br><span class="line">给定一个罗马数字，将其转换成整数。输入确保在 1 到 3999 的范围内。</span><br><span class="line">输入：II</span><br><span class="line">输出：2</span><br></pre></td></tr></table></figure>
 <p><strong>代码及解析：</strong></p>
 <p>利用字典存储字符与数字，key为字符，value为数值，将特殊规则那六种情况也存进去</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">romanToInt</span><span class="params">(self, s: str)</span> -&gt; int:</span></span><br><span class="line">        d = &#123;<span class="string">'I'</span>:<span class="number">1</span>, <span class="string">'IV'</span>:<span class="number">3</span>, <span class="string">'V'</span>:<span class="number">5</span>, <span class="string">'IX'</span>:<span class="number">8</span>, <span class="string">'X'</span>:<span class="number">10</span>, <span class="string">'XL'</span>:<span class="number">30</span>, <span class="string">'L'</span>:<span class="number">50</span>,</span><br><span class="line">         <span class="string">'XC'</span>:<span class="number">80</span>, <span class="string">'C'</span>:<span class="number">100</span>, <span class="string">'CD'</span>:<span class="number">300</span>, <span class="string">'D'</span>:<span class="number">500</span>, <span class="string">'CM'</span>:<span class="number">800</span>, <span class="string">'M'</span>:<span class="number">1000</span>&#125;</span><br><span class="line">        res=<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i,x <span class="keyword">in</span> enumerate(s):</span><br><span class="line">            res+=d.get(s[max(i<span class="number">-1</span>,<span class="number">0</span>):i+<span class="number">1</span>],d[x]) <span class="comment">#关键就在这，s[i-1:i+1]就是处理特殊规则的，max的作用防止出现 s[-1:0]的情况</span></span><br><span class="line">            <span class="comment"># get的作用 如果key中找到结果，即存在该特例字符串，返回该字符串对应的数值，否则返回的d[x]单个字符对应的数值</span></span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
@@ -530,8 +529,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -548,7 +556,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -561,7 +569,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -602,6 +610,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#13-罗马数字转整数"><span class="nav-number">1.</span> <span class="nav-text">13. 罗马数字转整数</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

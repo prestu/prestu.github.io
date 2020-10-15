@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,python标准库,bitsect,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="bisect">
+<meta name="keywords" content="python,python标准库,bitsect">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python函数库模块-bisect">
+<meta property="og:url" content="http://yoursite.com/2020/10/15/python标准库模块-bisect/index.html">
+<meta property="og:site_name" content="prestu">
+<meta property="og:description" content="bisect">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-10-15T03:34:41.909Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python函数库模块-bisect">
+<meta name="twitter:description" content="bisect">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/10/15/python标准库模块-bisect/">
+
+
+
+
+
+  <title>python函数库模块-bisect | prestu</title>
+  
+
+
+
+
+
+
+
+
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <!--
+      <a href="https://github.com/prestu"><img width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_green_007200.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1">
+      </a>
+    -->
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">prestu</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">like a dog,like a god!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-photos">
+          <a href="/photos" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-camera-retro"></i> <br>
+            
+            photos
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/15/python标准库模块-bisect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="范成恒">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/photos/images/blog_image.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="prestu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">python函数库模块-bisect</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-15T11:09:49+08:00">
+                2020-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.3k字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="bisect"><a href="#bisect" class="headerlink" title="bisect"></a>bisect<a id="more"></a></h1><hr>
+<p><strong>bisect模块实现了二分查找和插入算法</strong></p>
+<p>我们可以看一下bisect模块的源码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""Bisection algorithms."""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insort_right</span><span class="params">(a, x, lo=<span class="number">0</span>, hi=None)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> lo &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'lo must be non-negative'</span>)</span><br><span class="line">    <span class="keyword">if</span> hi <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        hi = len(a)</span><br><span class="line">    <span class="keyword">while</span> lo &lt; hi:</span><br><span class="line">        mid = (lo+hi)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> x &lt; a[mid]: hi = mid</span><br><span class="line">        <span class="keyword">else</span>: lo = mid+<span class="number">1</span></span><br><span class="line">    a.insert(lo, x)</span><br><span class="line"></span><br><span class="line">insort = insort_right   <span class="comment"># backward compatibility</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bisect_right</span><span class="params">(a, x, lo=<span class="number">0</span>, hi=None)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> lo &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'lo must be non-negative'</span>)</span><br><span class="line">    <span class="keyword">if</span> hi <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        hi = len(a)</span><br><span class="line">    <span class="keyword">while</span> lo &lt; hi:</span><br><span class="line">        mid = (lo+hi)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> x &lt; a[mid]: hi = mid</span><br><span class="line">        <span class="keyword">else</span>: lo = mid+<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> lo</span><br><span class="line"></span><br><span class="line">bisect = bisect_right   <span class="comment"># backward compatibility</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insort_left</span><span class="params">(a, x, lo=<span class="number">0</span>, hi=None)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> lo &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'lo must be non-negative'</span>)</span><br><span class="line">    <span class="keyword">if</span> hi <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        hi = len(a)</span><br><span class="line">    <span class="keyword">while</span> lo &lt; hi:</span><br><span class="line">        mid = (lo+hi)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> a[mid] &lt; x: lo = mid+<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>: hi = mid</span><br><span class="line">    a.insert(lo, x)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bisect_left</span><span class="params">(a, x, lo=<span class="number">0</span>, hi=None)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> lo &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'lo must be non-negative'</span>)</span><br><span class="line">    <span class="keyword">if</span> hi <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        hi = len(a)</span><br><span class="line">    <span class="keyword">while</span> lo &lt; hi:</span><br><span class="line">        mid = (lo+hi)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> a[mid] &lt; x: lo = mid+<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>: hi = mid</span><br><span class="line">    <span class="keyword">return</span> lo</span><br><span class="line"></span><br><span class="line"><span class="comment"># Overwrite above definitions with a fast C implementation</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">from</span> _bisect <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>这可能是Python初学者少有的能快速看懂的标准库源代码。整个模块去掉注释语句，就这么多行代码。</p>
+<p><code>bisect = bisect_right</code>这一行其实就是个alias，用于向后兼容。</p>
+<p>最后的try、except语句为我们提供了用C语言重写算法的钩子。</p>
+<h3 id="方法介绍"><a href="#方法介绍" class="headerlink" title="方法介绍"></a>方法介绍</h3><p>bisect模块采用经典的二分算法查找元素。模块提供下面几个方法：</p>
+<p><strong>bisect.bisect_left(a, x, lo=0, hi=len(a))</strong></p>
+<p>定位x在序列a中的插入点，并保持原来的有序状态不变。参数lo和hi用于指定查找区间。如果x已经存在于a中，那么插入点在已存在元素的左边。函数的返回值是列表的整数下标。</p>
+<p><strong>bisect.bisect_right(a, x, lo=0, hi=len(a))</strong></p>
+<p>和上面的区别是插入点在右边。函数的返回值依然是一个列表下标整数。</p>
+<p><strong>bisect.bisect(a, x, lo=0, hi=len(a))</strong></p>
+<p>等同于bisect_right()。</p>
+<p>注意，前面这三个方法都是获取插入位置，也就是列表的某个下标的，并不实际插入。但下面三个方法实际插入元素，没有返回值。</p>
+<p><strong>bisect.insort_left(a, x, lo=0, hi=len(a))</strong></p>
+<p>将x插入有序序列a内，并保持有序状态。相当于<code>a.insert(bisect.bisect_left(a, x, lo, hi), x)</code>。碰到相同的元素则插入到元素的左边。这个操作通常是 O(log n) 的时间复杂度。</p>
+<p><strong>bisect.insort_right(a, x, lo=0, hi=len(a))</strong></p>
+<p>同上，只不过碰到相同的元素则插入到元素的右边。</p>
+<p><strong>bisect.insort(a, x, lo=0, hi=len(a))</strong></p>
+<p>等同于insort_right()。</p>
+<p>实例展示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> bisect</span><br><span class="line"></span><br><span class="line">x = <span class="number">200</span></span><br><span class="line">list1 = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">24</span>, <span class="number">55</span>, <span class="number">78</span>, <span class="number">454</span>, <span class="number">555</span>, <span class="number">1234</span>, <span class="number">6900</span>]</span><br><span class="line">ret = bisect.bisect(list1, x)</span><br><span class="line">print(<span class="string">"返回值： "</span>, ret)</span><br><span class="line">print(<span class="string">"list1 = "</span>, list1)</span><br><span class="line"></span><br><span class="line"><span class="comment">#------------------------------</span></span><br><span class="line">运行结果：</span><br><span class="line">返回值：  <span class="number">6</span></span><br><span class="line">list1 =  [<span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">24</span>, <span class="number">55</span>, <span class="number">78</span>, <span class="number">454</span>, <span class="number">555</span>, <span class="number">1234</span>, <span class="number">6900</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">##########################################################</span></span><br><span class="line"><span class="keyword">import</span> bisect</span><br><span class="line"></span><br><span class="line">x = <span class="number">200</span></span><br><span class="line">list1 = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">24</span>, <span class="number">55</span>, <span class="number">78</span>, <span class="number">454</span>, <span class="number">555</span>, <span class="number">1234</span>, <span class="number">6900</span>]</span><br><span class="line">ret = bisect.insort(list1, x)</span><br><span class="line">print(<span class="string">"返回值： "</span>, ret)</span><br><span class="line">print(<span class="string">"list1 = "</span>, list1)</span><br><span class="line"></span><br><span class="line"><span class="comment">#------------------------------------------</span></span><br><span class="line">运行结果：</span><br><span class="line">返回值：  <span class="literal">None</span></span><br><span class="line">list1 =  [<span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">24</span>, <span class="number">55</span>, <span class="number">78</span>, <span class="number">200</span>, <span class="number">454</span>, <span class="number">555</span>, <span class="number">1234</span>, <span class="number">6900</span>]</span><br></pre></td></tr></table></figure>
+<p>下面是一个bisect和random配合的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> bisect</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">random.seed(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'New  Pos Contents'</span>)</span><br><span class="line">print(<span class="string">'---  --- --------'</span>)</span><br><span class="line"></span><br><span class="line">l = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">15</span>):</span><br><span class="line">    r = random.randint(<span class="number">1</span>, <span class="number">100</span>)</span><br><span class="line">    position = bisect.bisect(l, r)</span><br><span class="line">    bisect.insort(l, r)</span><br><span class="line">    print(<span class="string">'%3d  %3d'</span> % (r, position), l)</span><br><span class="line"></span><br><span class="line"><span class="comment">#------------------------------------------</span></span><br><span class="line">打印结果：</span><br><span class="line">New  Pos Contents</span><br><span class="line">---  --- --------</span><br><span class="line"> <span class="number">18</span>    <span class="number">0</span> [<span class="number">18</span>]</span><br><span class="line"> <span class="number">73</span>    <span class="number">1</span> [<span class="number">18</span>, <span class="number">73</span>]</span><br><span class="line"> <span class="number">98</span>    <span class="number">2</span> [<span class="number">18</span>, <span class="number">73</span>, <span class="number">98</span>]</span><br><span class="line">  <span class="number">9</span>    <span class="number">0</span> [<span class="number">9</span>, <span class="number">18</span>, <span class="number">73</span>, <span class="number">98</span>]</span><br><span class="line"> <span class="number">33</span>    <span class="number">2</span> [<span class="number">9</span>, <span class="number">18</span>, <span class="number">33</span>, <span class="number">73</span>, <span class="number">98</span>]</span><br><span class="line"> <span class="number">16</span>    <span class="number">1</span> [<span class="number">9</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">33</span>, <span class="number">73</span>, <span class="number">98</span>]</span><br><span class="line"> <span class="number">64</span>    <span class="number">4</span> [<span class="number">9</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">33</span>, <span class="number">64</span>, <span class="number">73</span>, <span class="number">98</span>]</span><br><span class="line"> <span class="number">98</span>    <span class="number">7</span> [<span class="number">9</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">33</span>, <span class="number">64</span>, <span class="number">73</span>, <span class="number">98</span>, <span class="number">98</span>]</span><br><span class="line"> <span class="number">58</span>    <span class="number">4</span> [<span class="number">9</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">33</span>, <span class="number">58</span>, <span class="number">64</span>, <span class="number">73</span>, <span class="number">98</span>, <span class="number">98</span>]</span><br><span class="line"> <span class="number">61</span>    <span class="number">5</span> [<span class="number">9</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">33</span>, <span class="number">58</span>, <span class="number">61</span>, <span class="number">64</span>, <span class="number">73</span>, <span class="number">98</span>, <span class="number">98</span>]</span><br><span class="line"> <span class="number">84</span>    <span class="number">8</span> [<span class="number">9</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">33</span>, <span class="number">58</span>, <span class="number">61</span>, <span class="number">64</span>, <span class="number">73</span>, <span class="number">84</span>, <span class="number">98</span>, <span class="number">98</span>]</span><br><span class="line"> <span class="number">49</span>    <span class="number">4</span> [<span class="number">9</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">33</span>, <span class="number">49</span>, <span class="number">58</span>, <span class="number">61</span>, <span class="number">64</span>, <span class="number">73</span>, <span class="number">84</span>, <span class="number">98</span>, <span class="number">98</span>]</span><br><span class="line"> <span class="number">27</span>    <span class="number">3</span> [<span class="number">9</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">27</span>, <span class="number">33</span>, <span class="number">49</span>, <span class="number">58</span>, <span class="number">61</span>, <span class="number">64</span>, <span class="number">73</span>, <span class="number">84</span>, <span class="number">98</span>, <span class="number">98</span>]</span><br><span class="line"> <span class="number">13</span>    <span class="number">1</span> [<span class="number">9</span>, <span class="number">13</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">27</span>, <span class="number">33</span>, <span class="number">49</span>, <span class="number">58</span>, <span class="number">61</span>, <span class="number">64</span>, <span class="number">73</span>, <span class="number">84</span>, <span class="number">98</span>, <span class="number">98</span>]</span><br></pre></td></tr></table></figure>
+<p>下面的5个例子是利用bisect模块实现通用的列表元素查询方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(a, x)</span>:</span></span><br><span class="line">    <span class="string">'定位最左边的值等于x的元素的下标'</span></span><br><span class="line">    i = bisect_left(a, x)</span><br><span class="line">    <span class="keyword">if</span> i != len(a) <span class="keyword">and</span> a[i] == x:</span><br><span class="line">        <span class="keyword">return</span> i</span><br><span class="line">    <span class="keyword">raise</span> ValueError</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_lt</span><span class="params">(a, x)</span>:</span></span><br><span class="line">    <span class="string">'获取最靠右的值小于x的元素'</span></span><br><span class="line">    i = bisect_left(a, x)</span><br><span class="line">    <span class="keyword">if</span> i:</span><br><span class="line">        <span class="keyword">return</span> a[i<span class="number">-1</span>]</span><br><span class="line">    <span class="keyword">raise</span> ValueError</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_le</span><span class="params">(a, x)</span>:</span></span><br><span class="line">    <span class="string">'获取最靠右的值小于等于x的元素'</span></span><br><span class="line">    i = bisect_right(a, x)</span><br><span class="line">    <span class="keyword">if</span> i:</span><br><span class="line">        <span class="keyword">return</span> a[i<span class="number">-1</span>]</span><br><span class="line">    <span class="keyword">raise</span> ValueError</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_gt</span><span class="params">(a, x)</span>:</span></span><br><span class="line">    <span class="string">'获取最靠左边的值大于x的元素'</span></span><br><span class="line">    i = bisect_right(a, x)</span><br><span class="line">    <span class="keyword">if</span> i != len(a):</span><br><span class="line">        <span class="keyword">return</span> a[i]</span><br><span class="line">    <span class="keyword">raise</span> ValueError</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_ge</span><span class="params">(a, x)</span>:</span></span><br><span class="line">    <span class="string">'获取最靠左边的值大于或等于x的元素'</span></span><br><span class="line">    i = bisect_left(a, x)</span><br><span class="line">    <span class="keyword">if</span> i != len(a):</span><br><span class="line">        <span class="keyword">return</span> a[i]</span><br><span class="line">    <span class="keyword">raise</span> ValueError</span><br></pre></td></tr></table></figure>
+<p>下面是一个利用bisect自动由百分制成绩转换为ABCD等级的方法：90 以上是‘A’, 80 -89 是‘B’,</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">grade</span><span class="params">(score, breakpoints=[<span class="number">60</span>, <span class="number">70</span>, <span class="number">80</span>, <span class="number">90</span>], grades=<span class="string">'FDCBA'</span>)</span>:</span></span><br><span class="line"><span class="meta">... </span>    i = bisect(breakpoints, score)</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> grades[i]</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[grade(score) <span class="keyword">for</span> score <span class="keyword">in</span> [<span class="number">33</span>, <span class="number">99</span>, <span class="number">77</span>, <span class="number">70</span>, <span class="number">89</span>, <span class="number">90</span>, <span class="number">100</span>]]</span><br><span class="line">[<span class="string">'F'</span>, <span class="string">'A'</span>, <span class="string">'C'</span>, <span class="string">'C'</span>, <span class="string">'B'</span>, <span class="string">'A'</span>, <span class="string">'A'</span>]</span><br></pre></td></tr></table></figure>
+<p>另外一个例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>data = [(<span class="string">'red'</span>, <span class="number">5</span>), (<span class="string">'blue'</span>, <span class="number">1</span>), (<span class="string">'yellow'</span>, <span class="number">8</span>), (<span class="string">'black'</span>, <span class="number">0</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data.sort(key=<span class="keyword">lambda</span> r: r[<span class="number">1</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>keys = [r[<span class="number">1</span>] <span class="keyword">for</span> r <span class="keyword">in</span> data]         <span class="comment"># precomputed list of keys</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data[bisect_left(keys, <span class="number">0</span>)]</span><br><span class="line">(<span class="string">'black'</span>, <span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data[bisect_left(keys, <span class="number">1</span>)]</span><br><span class="line">(<span class="string">'blue'</span>, <span class="number">1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data[bisect_left(keys, <span class="number">5</span>)]</span><br><span class="line">(<span class="string">'red'</span>, <span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>data[bisect_left(keys, <span class="number">8</span>)]</span><br><span class="line">(<span class="string">'yellow'</span>, <span class="number">8</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>转自：</strong><a href="https://www.liujiangblog.com/course/python/57" target="_blank" rel="noopener">https://www.liujiangblog.com/course/python/57</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>hey!baby,站住，点它!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.png" alt="范成恒 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="范成恒 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/python标准库/" rel="tag"># python标准库</a>
+          
+            <a href="/tags/bitsect/" rel="tag"># bitsect</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/10/14/python标准库模块-heapq/" rel="next" title="python标准库模块-heapq">
+                <i class="fa fa-chevron-left"></i> python标准库模块-heapq
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NDU1Ny8yMTA4Nw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/photos/images/blog_image.jpg" alt="范成恒">
+            
+              <p class="site-author-name" itemprop="name">范成恒</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://1ming.xyz/" title="手表知识" target="_blank">手表知识</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://boctorio.com/" title="boctorio" target="_blank">boctorio</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#bisect"><span class="nav-number">1.</span> <span class="nav-text">bisect</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法介绍"><span class="nav-number">1.0.1.</span> <span class="nav-text">方法介绍</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--网站计时-->
+<script>
+    function secondToDate(second) {
+        if (!second) {
+            return 0;
+        }
+        var time = new Array(0, 0, 0, 0, 0);
+        if (second >= 365 * 24 * 3600) {
+            time[0] = parseInt(second / (365 * 24 * 3600));
+            second %= 365 * 24 * 3600;
+        }
+        if (second >= 24 * 3600) {
+            time[1] = parseInt(second / (24 * 3600));
+            second %= 24 * 3600;
+        }
+        if (second >= 3600) {
+            time[2] = parseInt(second / 3600);
+            second %= 3600;
+        }
+        if (second >= 60) {
+            time[3] = parseInt(second / 60);
+            second %= 60;
+        }
+        if (second > 0) {
+            time[4] = second;
+        }
+        return time;
+    }</script>
+<script type="text/javascript" language="javascript">
+    function setTime() {
+        var create_time = Math.round(new Date(Date.UTC(2019, 01, 01, 00, 00, 00)).getTime() / 1000);
+        var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+        currentTime = secondToDate((timestamp - create_time));
+        currentTimeHtml = '已经运行了：' + currentTime[0] + '年' + currentTime[1] + '天'
+                + currentTime[2] + '时' + currentTime[3] + '分' + currentTime[4]
+                + '秒';
+        document.getElementById("htmer_time").innerHTML = currentTimeHtml;
+    }    setInterval(setTime, 1000);
+</script>
+<span id="busuanzi_container_site_uv">本站访客数:<span id="busuanzi_value_site_uv"></span>人</span>
+<span id="busuanzi_container_site_pv">本站总访问量:<span id="busuanzi_value_site_pv"></span>次</span>
+
+
+
+ <span itemprop="copyrightYear"></span>
+
+<div id="jnkc">    </div>    <script>setInterval("jnkc.innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",1000);    </script>      
+ 
+ <span id="htmer_time" "></span>
+
+<a href="http://www.beian.miit.gov.cn/">豫ICP备19043996号</a>
+
+
+
+  
+</div>
+
+
+  <div class="powered-by"><a < a></a></div>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </footer></div>
+    
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v="></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v="></script>
+
+  <script type="text/javascript" src="/js/src/canvasline.js?v="></script>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === '') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <!--
+  -->
+  <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":true,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":120,"height":180},"mobile":{"show":false},"log":false});</script>
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+<!--单击显示文字-->
+<script type="text/javascript" src="/js/src/click_show_text.js"></script>
