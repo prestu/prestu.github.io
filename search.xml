@@ -2519,9 +2519,9 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">最短步数为：186</span><br><span class="line">DDDDRRURRRRRRDRRRRDDDLDDRDDDDDDDDDDDDRDDRRRURRUURRDDDDRDRRRRRRDRRURRDDDRRRRUURUUUUUUULULLUUUURRRRUULLLUUUULLUUULUURRURRURURRRDDRRRRRDDRRDDLLLDDRRDDRDDLDDDLLDDLLLDLDDDLDDRRRRRRRRRDDDDDDRR</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
+        <tag>蓝桥杯</tag>
         <tag>bfs</tag>
         <tag>记录路径</tag>
-        <tag>蓝桥杯</tag>
       </tags>
   </entry>
   <entry>
