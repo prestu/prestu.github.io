@@ -1138,28 +1138,6 @@
       </tags>
   </entry>
   <entry>
-    <title>利用费马小定理求逆元</title>
-    <url>/2019/10/13/%E8%B4%B9%E9%A9%AC%E5%B0%8F%E5%AE%9A%E7%90%86/</url>
-    <content><![CDATA[<p>费马小定理：a是不能被质数p整除的正整数，则有a^(p-1)≡ 1 (mod p)</p>
-<p>推导：a^(p−1) ≡ 1 (mod p) = a*a^(p−2 )≡ 1 (mod p) ;</p>
-<p>则a的逆元 为 a^(p−2)。利用费马小定理求逆元的前提强调p一定是质数。</p>
-<p>说这些你可能不太明白，先看一道题就明白了，</p>
-<a id="more"></a>
-<p><a href="http://acm.hdu.edu.cn/showproblem.php?pid=1576" target="_blank" rel="noopener">HDU1576</a></p>
-<p>要求(A/B)%9973，但由于A很大，我们只给出n(n=A%9973)(我们给定的A必能被B整除，且gcd(B,9973) = 1)。</p>
-<p>Input<br>数据的第一行是一个T，表示有T组数据。<br>每组数据有两个数n(0 &lt;= n &lt; 9973)和B(1 &lt;= B &lt;= 10^9)。</p>
-<p>Output<br>对应每组数据输出(A/B)%9973。</p>
-<p>Sample Input<br>2<br>1000 53<br>87 123456789</p>
-<p>Sample Output<br>7922<br>6060 </p>
-<p>如果我们直接求肯定不行 ，所以要利用逆元求解，并且9973（即是上面的p）为质数，</p>
-<p>设C是B的逆元，则有B<em>C≡1(mod P)； 推论：(A/B)mod P = (A/B)</em>1mod p = (A/B)<em>B</em>C mod p=A<em>C(mod p); 即A/B的模等于A</em>(B的逆元)的模；l利用费马小定理得出C=B^(p-2);则原式可转化为（A<em>C）%p=（A%p</em>C%p）%p；个人见解，欢迎纠错.</p>
-<h2 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#include&lt;math.h&gt;</span><br><span class="line">#define mod 9973</span><br><span class="line">typedef long long ll;//对 long long重命名 </span><br><span class="line">ll DD(ll a ,ll b)//求解 a^b%mod(因为a^b太大 需利用快速幂求解) </span><br><span class="line">&#123;</span><br><span class="line">    ll res=1;</span><br><span class="line">    if(b&lt;0)</span><br><span class="line">    return 0;</span><br><span class="line">    while(b)</span><br><span class="line">    &#123;</span><br><span class="line">        if(b&amp;1) res=res*a%mod;</span><br><span class="line">        a=a*a%mod;</span><br><span class="line">        b&gt;&gt;=1;</span><br><span class="line">    &#125;</span><br><span class="line">    return res;</span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">    ll a,b,i;</span><br><span class="line">    ll t;</span><br><span class="line">    scanf(&quot;%lld&quot;,&amp;t);</span><br><span class="line">    while(t--)</span><br><span class="line">    &#123;</span><br><span class="line">        scanf(&quot;%lld %lld&quot;,&amp;a,&amp;b);</span><br><span class="line">        i=DD(b,(mod-2));//i即为 b的逆元 </span><br><span class="line">    printf(&quot;%lld\n&quot;,(a%mod*i%mod)%mod); //A*C）%p=（A%p*C%p）%p </span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>费马小定理</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>利用python打造淘宝抢购脚本</title>
     <url>/2019/07/31/%E5%88%A9%E7%94%A8python%E6%89%93%E9%80%A0%E6%B7%98%E5%AE%9D%E6%8A%A2%E8%B4%AD%E8%84%9A%E6%9C%AC/</url>
     <content><![CDATA[<p>说这是一款自动抢购脚本是没问题的，不过其实一款半自动抢购脚本，为什么这么说呢，因为并没有达到完全自动抢购，需要扫码登陆，登陆之后就可以自动抢购了，该脚本主要依赖第三方库selenium自动打开谷歌浏览器进行模拟登陆淘宝。</p>
@@ -2501,6 +2479,28 @@
 ]]></content>
       <tags>
         <tag>并查集</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>利用费马小定理求逆元</title>
+    <url>/2019/03/25/%E8%B4%B9%E9%A9%AC%E5%B0%8F%E5%AE%9A%E7%90%86/</url>
+    <content><![CDATA[<p>费马小定理：a是不能被质数p整除的正整数，则有a^(p-1)≡ 1 (mod p)</p>
+<p>推导：a^(p−1) ≡ 1 (mod p) = a*a^(p−2 )≡ 1 (mod p) ;</p>
+<p>则a的逆元 为 a^(p−2)。利用费马小定理求逆元的前提强调p一定是质数。</p>
+<p>说这些你可能不太明白，先看一道题就明白了，</p>
+<a id="more"></a>
+<p><a href="http://acm.hdu.edu.cn/showproblem.php?pid=1576" target="_blank" rel="noopener">HDU1576</a></p>
+<p>要求(A/B)%9973，但由于A很大，我们只给出n(n=A%9973)(我们给定的A必能被B整除，且gcd(B,9973) = 1)。</p>
+<p>Input<br>数据的第一行是一个T，表示有T组数据。<br>每组数据有两个数n(0 &lt;= n &lt; 9973)和B(1 &lt;= B &lt;= 10^9)。</p>
+<p>Output<br>对应每组数据输出(A/B)%9973。</p>
+<p>Sample Input<br>2<br>1000 53<br>87 123456789</p>
+<p>Sample Output<br>7922<br>6060 </p>
+<p>如果我们直接求肯定不行 ，所以要利用逆元求解，并且9973（即是上面的p）为质数，</p>
+<p>设C是B的逆元，则有B<em>C≡1(mod P)； 推论：(A/B)mod P = (A/B)</em>1mod p = (A/B)<em>B</em>C mod p=A<em>C(mod p); 即A/B的模等于A</em>(B的逆元)的模；l利用费马小定理得出C=B^(p-2);则原式可转化为（A<em>C）%p=（A%p</em>C%p）%p；个人见解，欢迎纠错.</p>
+<h2 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#include&lt;math.h&gt;</span><br><span class="line">#define mod 9973</span><br><span class="line">typedef long long ll;//对 long long重命名 </span><br><span class="line">ll DD(ll a ,ll b)//求解 a^b%mod(因为a^b太大 需利用快速幂求解) </span><br><span class="line">&#123;</span><br><span class="line">    ll res=1;</span><br><span class="line">    if(b&lt;0)</span><br><span class="line">    return 0;</span><br><span class="line">    while(b)</span><br><span class="line">    &#123;</span><br><span class="line">        if(b&amp;1) res=res*a%mod;</span><br><span class="line">        a=a*a%mod;</span><br><span class="line">        b&gt;&gt;=1;</span><br><span class="line">    &#125;</span><br><span class="line">    return res;</span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">    ll a,b,i;</span><br><span class="line">    ll t;</span><br><span class="line">    scanf(&quot;%lld&quot;,&amp;t);</span><br><span class="line">    while(t--)</span><br><span class="line">    &#123;</span><br><span class="line">        scanf(&quot;%lld %lld&quot;,&amp;a,&amp;b);</span><br><span class="line">        i=DD(b,(mod-2));//i即为 b的逆元 </span><br><span class="line">    printf(&quot;%lld\n&quot;,(a%mod*i%mod)%mod); //A*C）%p=（A%p*C%p）%p </span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>费马小定理</tag>
       </tags>
   </entry>
   <entry>
