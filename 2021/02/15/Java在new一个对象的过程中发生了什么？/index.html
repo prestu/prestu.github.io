@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha256-4Lad8m4ZWW1Lgb9+sMVLYEfnIh7BjV1NQMEe79Pviks=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"prestu.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.29.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":false,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="大致过程如下：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java在new一个对象的过程中发生了什么？">
+<meta property="og:url" content="https://prestu.github.io/2021/02/15/Java%E5%9C%A8new%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F/index.html">
+<meta property="og:site_name" content="prestu">
+<meta property="og:description" content="大致过程如下：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-02-15T12:10:26.000Z">
+<meta property="article:modified_time" content="2026-11-09T01:27:44.000Z">
+<meta property="article:author" content="prestu">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://prestu.github.io/2021/02/15/Java%E5%9C%A8new%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://prestu.github.io/2021/02/15/Java%E5%9C%A8new%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F/","path":"2021/02/15/Java在new一个对象的过程中发生了什么？/","title":"Java在new一个对象的过程中发生了什么？"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java在new一个对象的过程中发生了什么？ | prestu</title>
+  
+
+
+
+
+
+
+
+
+  
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-search popup-trigger" aria-label="搜索" role="button">
+      <i class="fa fa-search fa-fw fa-lg"></i>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">prestu</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">like a dog,like a god!</p>
+  </div>
+
+  <div class="site-nav-toggle" aria-label="切换导航栏" role="button">
+      <i class="fa fa-ellipsis fa-fw fa-lg"></i>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-photos"><a href="/photos" rel="section"><i class="fa fa-camera-retro fa-fw"></i>photos</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  
+  <template id="search-popup-template"><div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div></template>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E5%85%85%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">补充：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="prestu"
+      src="/photos/images/blog_image.jpg">
+  <p class="site-author-name" itemprop="name">prestu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          友情链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://boctorio.com/" title="https:&#x2F;&#x2F;boctorio.com&#x2F;" rel="noopener" target="_blank">boctorio</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://prestu.github.io/2021/02/15/Java%E5%9C%A8new%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/photos/images/blog_image.jpg">
+      <meta itemprop="name" content="prestu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="prestu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java在new一个对象的过程中发生了什么？ | prestu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java在new一个对象的过程中发生了什么？
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-02-15 20:10:26" itemprop="dateCreated datePublished" datetime="2021-02-15T20:10:26+08:00">2021-02-15</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="字数统计">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-lines"></i>
+      </span>
+      <span class="post-meta-item-text">字数统计：</span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><strong>大致过程如下：</strong><span id="more"></span></p>
+<p>1，首先到常量池中找类的带路径全名，然后检查对应的字节码是否已执行类加载过程，如果没有先执行类加载过程(class.forname())。</p>
+<p>2，类加载过程完成后，虚拟机会为对象分配内存。</p>
+<p>分配内存有两种方式:</p>
+<ol>
+<li>**指针碰撞：**假设堆内存是规整的，把用过的内存放一边，没用过得放另一边，中间做个标记指针分开，当需要分配内存的时候就把标记指针向没用过的一边移动相应的距离。</li>
+<li><strong>空闲列表</strong>：假设堆内存是一个个的内存碎片，已使用的和未使用的相互交错，当需要分配内存的时候，从未使用的内存碎片中找一个足够大的空间划分给对象实例，并更新使用情况记录。</li>
+</ol>
+<p>要根据使用的垃圾收集器的不同使用不同的分配机制。</p>
+<p>3，设置对象头信息，如所属类，元数据信息，哈希码，gc分代年龄，偏向锁等等。</p>
+<p>4，调用对象的init()方法,根据传入的属性值给对象属性赋值。</p>
+<p>5，在线程栈中新建对象引用，并指向堆中刚刚新建的对象实例。</p>
+<p><strong>过程的详细说明：</strong></p>
+<p>java在new一个对象的时候，会先查看对象所属的类有没有被加载到内存，如果没有的话，就会先通过类的全限定名来加载。加载并初始化类完成后，再进行对象的创建工作。</p>
+<p>我们先假设是第一次使用该类，这样的话new一个对象就可以分为两个过程：<strong>加载并初始化类</strong>和<strong>创建对象。</strong></p>
+<p><strong>一、类加载过程：</strong></p>
+<p>　　java是使用<strong>双亲委派模型</strong>来进行类的加载的，所以在描述类加载过程前，我们先看一下它的工作过程：</p>
+<blockquote>
+<p>​ 双亲委托模型的工作过程是：如果一个类加载器（ClassLoader）收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把这个请求委托给父类加载器去完成，每一个层次的类加载器都是如此，因此所有的加载请求最终都应该传送到顶层的启动类加载器中，只有当父类加载器反馈自己无法完成这个加载请求（它的搜索范围中没有找到所需要加载的类）时，子加载器才会尝试自己去加载。<br>​ 使用双亲委托机制的<strong>好处</strong>是：能够有效确保一个类的全局唯一性，当程序中出现多个限定名相同的类时，类加载器在执行加载时，始终只会加载其中的某一个类。</p>
+</blockquote>
+<p><strong>1、加载</strong></p>
+<p>​ 由类加载器负责根据一个类的全限定名来读取此类的二进制字节流到JVM内部，并存储在运行时内存区的方法区，然后将其转换为一个与目标类型对应的java.lang.Class对象实例</p>
+<p><strong>2、验证</strong></p>
+<p>​ <strong>格式验证</strong>：验证是否符合class文件规范.<br>​ <strong>语义验证</strong>：检查一个被标记为final的类型是否包含子类；检查一个类中的final方法是否被子类进行重写；确保父类 和子类之间没有不兼容的一些方法声明（比如方法签名相同，但方法的返回值不同）.<br>​ <strong>操作验证</strong>：在操作数栈中的数据必须进行正确的操作，对常量池中的各种符号引用执行验证（通常在解析阶段执 行，检查是否可以通过符号引用中描述的全限定名定位到指定类型上，以及类成员信息的访问修饰符 是否允许访问等）.</p>
+<p><strong>3、准备</strong></p>
+<p>​ 为类中的所有静态变量分配内存空间，并为其设置一个初始值（由于还没有产生对象，实例变量不在此操作范围内），被final修饰的static变量（常量），会直接赋值；</p>
+<p><strong>4、解析</strong></p>
+<p>​ 将常量池中的符号引用转为直接引用（得到类或者字段、方法在内存中的指针或者偏移量，以便直接调用该方法），这个可以在初始化之后再执行。解析需要静态绑定的内容。 &#x2F;&#x2F; 所有不会被重写的方法和域都会被静态绑定。</p>
+<p><strong>以上2、3、4三个阶段又合称为链接阶段</strong>，链接阶段要做的是将加载到JVM中的二进制字节流的类数据信息合并到JVM的运行时状态中。</p>
+<p><strong>5、初始化（先父后子）</strong></p>
+<p>​ 5.1 为静态变量赋值</p>
+<p>​ 5.2 执行static代码块</p>
+<blockquote>
+<p>**注意：**static代码块只有jvm能够调用<br>　　　如果是多线程需要同时初始化一个类，仅仅只能允许其中一个线程对其执行初始化操作，其余线程必须等待，只有在活动线程执行完对类的初始化操作之后，才会通知正在等待的其他线程。</p>
+</blockquote>
+<p>因为子类存在对父类的依赖，所以**类的加载顺序是先加载父类后加载子类，初始化也一样。**不过，父类初始化时，子类静态变量的值也是有的，是默认值。</p>
+<p>最终，方法区会存储当前类类信息，包括类的<strong>静态变量</strong>、<strong>类初始化代码</strong>（<strong>定义静态变量时的赋值语句</strong> 和 <strong>静态初始化代码块</strong>）、<strong>实例变量定义</strong>、<strong>实例初始化代码</strong>（<strong>定义实例变量时的赋值语句实例代码块</strong>和<strong>构造方法</strong>）和<strong>实例方法</strong>，还有<strong>父类的类信息引用。</strong></p>
+<p><strong>二、创建对象</strong></p>
+<p><strong>1、在堆区分配对象需要的内存</strong></p>
+<p>　　分配的内存包括本类和父类的所有实例变量，但不包括任何静态变量</p>
+<p><strong>2、对所有实例变量赋默认值</strong></p>
+<p>　　将方法区内对实例变量的定义拷贝一份到堆区，然后赋默认值</p>
+<p><strong>3、执行实例初始化代码</strong></p>
+<p>　　初始化顺序是先初始化父类再初始化子类，初始化时先执行实例代码块然后是构造方法</p>
+<p><strong>4、如果有类似于Child c &#x3D; new Child()形式的c引用的话，在栈区定义Child类型引用变量c，然后将堆区对象的地址赋值给它</strong></p>
+<p>需要注意的是，<strong>每个子类对象持有父类对象的引用</strong>，可在内部通过super关键字来调用父类对象，但在外部不可访问</p>
+<h3 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h3><p>通过实例引用调用实例方法的时候，先从方法区中对象的实际类型信息找，找不到的话再去父类类型信息中找。</p>
+<p>如果继承的层次比较深，要调用的方法位于比较上层的父类，则调用的效率是比较低的，因为每次调用都要经过很多次查找。这时候大多系统会采用一种称为<strong>虚方法表</strong>的方法来优化调用的效率。</p>
+<p>所谓<strong>虚方法表</strong>，就是在类加载的时候，为每个类创建一个表，这个表包括该类的对象所有动态绑定的方法及其地址，包括父类的方法，但一个方法只有一条记录，子类重写了父类方法后只会保留子类的。当通过对象动态绑定方法的时候，只需要查找这个表就可以了，而不需要挨个查找每个父类。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/15/Java%E4%B8%ADList-Integer%5B%5D-int%5B%5D-%E7%9A%84%E7%9B%B8%E4%BA%92%E8%BD%AC%E6%8D%A2/" rel="prev" title="Java中List,Integer[],int[]的相互转换">
+                  <i class="fa fa-angle-left"></i> Java中List,Integer[],int[]的相互转换
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/02/15/java%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F/" rel="next" title="java中常用的设计模式都有哪些？">
+                  java中常用的设计模式都有哪些？ <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">豫ICP备19043996号 </a>
+  </div>
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">prestu</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><style>
+.prestu-footer-extra{margin-top:6px;font-size:13px;color:#999}
+.prestu-footer-extra span{display:inline-block;margin:0 6px}
+</style>
+<div class="prestu-footer-extra">
+  <span id="htmer_time"></span>
+  <span id="jnkc"></span>
+</div>
+<script>
+  function secondToDate(second) {
+    if (!second) { return 0; }
+    var time = new Array(0, 0, 0, 0, 0);
+    if (second >= 365 * 24 * 3600) { time[0] = parseInt(second / (365 * 24 * 3600)); second %= 365 * 24 * 3600; }
+    if (second >= 24 * 3600) { time[1] = parseInt(second / (24 * 3600)); second %= 24 * 3600; }
+    if (second >= 3600) { time[2] = parseInt(second / 3600); second %= 3600; }
+    if (second >= 60) { time[3] = parseInt(second / 60); second %= 60; }
+    if (second > 0) { time[4] = second; }
+    return time;
+  }
+  function prestuSetTime() {
+    var create_time = Math.round(new Date(Date.UTC(2019, 0, 1, 0, 0, 0)).getTime() / 1000);
+    var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+    var currentTime = secondToDate((timestamp - create_time));
+    var html = '已经运行了：' + currentTime[0] + '年' + currentTime[1] + '天' + currentTime[2] + '时' + currentTime[3] + '分' + currentTime[4] + '秒';
+    var el = document.getElementById('htmer_time');
+    if (el) { el.innerHTML = html; }
+  }
+  function prestuClock() {
+    var el = document.getElementById('jnkc');
+    if (el) { el.innerHTML = new Date().toLocaleString() + ' 星期' + '日一二三四五六'.charAt(new Date().getDay()); }
+  }
+  setInterval(prestuSetTime, 1000);
+  setInterval(prestuClock, 1000);
+  prestuSetTime();
+  prestuClock();
+</script>
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"prestu/prestu.github.io","issue_term":"pathname","theme":"github-light"}</script>
+<script src="/js/third-party/comments/utterances.js" defer></script>
+<script src="/live2dw/lib/L2Dwidget.min.js"></script>
+<script>
+  L2Dwidget.init({
+    "pluginRootPath": "live2dw/",
+    "pluginJsPath": "lib/",
+    "pluginModelPath": "assets/",
+    "tagMode": true,
+    "debug": false,
+    "model": { "jsonPath": "/live2dw/assets/koharu.model.json" },
+    "display": { "position": "right", "width": 120, "height": 180 },
+    "mobile": { "show": false },
+    "log": false
+  });
+</script>
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+<script type="text/javascript" src="/js/src/click_show_text.js"></script>
+
+</body>
+</html>

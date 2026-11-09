@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha256-4Lad8m4ZWW1Lgb9+sMVLYEfnIh7BjV1NQMEe79Pviks=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"prestu.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.29.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":false,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="先把问题摆出来（1）NTP 校时把时间往回拨了 1 秒，发号服务为什么可能发出完全相同的 ID？ （2）两台机器配了同一个 workerId，为什么上线第一天不报错，扩容之后才开始主键冲突？ （3）数据库里明明是 19 位 ID，前端列表里末几位变成了 0，点详情直接 404？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="雪花算法的三个坑：时钟回拨、workerId 冲突与前端精度丢失">
+<meta property="og:url" content="https://prestu.github.io/2026/11/09/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95%E7%9A%84%E4%B8%89%E4%B8%AA%E5%9D%91/index.html">
+<meta property="og:site_name" content="prestu">
+<meta property="og:description" content="先把问题摆出来（1）NTP 校时把时间往回拨了 1 秒，发号服务为什么可能发出完全相同的 ID？ （2）两台机器配了同一个 workerId，为什么上线第一天不报错，扩容之后才开始主键冲突？ （3）数据库里明明是 19 位 ID，前端列表里末几位变成了 0，点详情直接 404？">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-11-09T02:20:00.000Z">
+<meta property="article:modified_time" content="2026-11-09T02:16:24.000Z">
+<meta property="article:author" content="prestu">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="分布式ID">
+<meta property="article:tag" content="雪花算法">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://prestu.github.io/2026/11/09/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95%E7%9A%84%E4%B8%89%E4%B8%AA%E5%9D%91/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://prestu.github.io/2026/11/09/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95%E7%9A%84%E4%B8%89%E4%B8%AA%E5%9D%91/","path":"2026/11/09/雪花算法的三个坑/","title":"雪花算法的三个坑：时钟回拨、workerId 冲突与前端精度丢失"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>雪花算法的三个坑：时钟回拨、workerId 冲突与前端精度丢失 | prestu</title>
+  
+
+
+
+
+
+
+
+
+  
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-search popup-trigger" aria-label="搜索" role="button">
+      <i class="fa fa-search fa-fw fa-lg"></i>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">prestu</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">like a dog,like a god!</p>
+  </div>
+
+  <div class="site-nav-toggle" aria-label="切换导航栏" role="button">
+      <i class="fa fa-ellipsis fa-fw fa-lg"></i>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-photos"><a href="/photos" rel="section"><i class="fa fa-camera-retro fa-fw"></i>photos</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  
+  <template id="search-popup-template"><div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div></template>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E6%8A%8A%E9%97%AE%E9%A2%98%E6%91%86%E5%87%BA%E6%9D%A5"><span class="nav-number">1.</span> <span class="nav-text">先把问题摆出来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%97%B6%E9%92%9F%E5%9B%9E%E6%8B%A8%EF%BC%9A41-%E4%BD%8D%E6%97%B6%E9%97%B4%E6%88%B3%E7%9A%84%E5%89%8D%E6%8F%90%E6%98%AF%E2%80%9D%E6%97%B6%E9%97%B4%E5%8D%95%E8%B0%83%E2%80%9D"><span class="nav-number">2.</span> <span class="nav-text">一、时钟回拨：41 位时间戳的前提是”时间单调”</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E7%AD%96%E7%95%A5"><span class="nav-number">2.1.</span> <span class="nav-text">处理策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81workerId-%E5%86%B2%E7%AA%81%EF%BC%9A%E9%85%8D%E7%BD%AE%E5%86%99%E6%AD%BB-%E5%9F%8B%E4%B8%80%E9%A2%97%E5%AE%9A%E6%97%B6%E7%82%B8%E5%BC%B9"><span class="nav-number">3.</span> <span class="nav-text">二、workerId 冲突：配置写死 &#x3D; 埋一颗定时炸弹</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E4%B8%AA%E5%8F%AF%E8%90%BD%E5%9C%B0%E7%9A%84%E5%88%86%E9%85%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text">三个可落地的分配方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%89%8D%E7%AB%AF%E7%B2%BE%E5%BA%A6%E4%B8%A2%E5%A4%B1%EF%BC%9AID-%E5%87%BA%E4%BA%86-JVM-%E5%B0%B1%E8%AF%A5%E6%98%AF%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">4.</span> <span class="nav-text">三、前端精度丢失：ID 出了 JVM 就该是字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">解决办法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%E8%BF%99%E4%B8%89%E4%B8%AA%E7%82%B9"><span class="nav-number">5.</span> <span class="nav-text">四、怎么验证这三个点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">小结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="prestu"
+      src="/photos/images/blog_image.jpg">
+  <p class="site-author-name" itemprop="name">prestu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          友情链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://boctorio.com/" title="https:&#x2F;&#x2F;boctorio.com&#x2F;" rel="noopener" target="_blank">boctorio</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://prestu.github.io/2026/11/09/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95%E7%9A%84%E4%B8%89%E4%B8%AA%E5%9D%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/photos/images/blog_image.jpg">
+      <meta itemprop="name" content="prestu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="prestu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="雪花算法的三个坑：时钟回拨、workerId 冲突与前端精度丢失 | prestu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          雪花算法的三个坑：时钟回拨、workerId 冲突与前端精度丢失
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-11-09 10:20:00" itemprop="dateCreated datePublished" datetime="2026-11-09T10:20:00+08:00">2026-11-09</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="字数统计">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-lines"></i>
+      </span>
+      <span class="post-meta-item-text">字数统计：</span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="先把问题摆出来"><a href="#先把问题摆出来" class="headerlink" title="先把问题摆出来"></a>先把问题摆出来</h2><p>（1）NTP 校时把时间往回拨了 1 秒，发号服务为什么可能发出<strong>完全相同</strong>的 ID？</p>
+<p>（2）两台机器配了同一个 workerId，为什么上线第一天不报错，扩容之后才开始主键冲突？</p>
+<p>（3）数据库里明明是 19 位 ID，前端列表里末几位变成了 0，点详情直接 404？</p>
+<span id="more"></span>
+
+<p>这三个问题我在项目里都踩过，它们不是”实现写错了”，而是雪花算法落地时绕不开的三类边界。<br>下面按踩坑顺序说，附最小可用代码。</p>
+<h2 id="一、时钟回拨：41-位时间戳的前提是”时间单调”"><a href="#一、时钟回拨：41-位时间戳的前提是”时间单调”" class="headerlink" title="一、时钟回拨：41 位时间戳的前提是”时间单调”"></a>一、时钟回拨：41 位时间戳的前提是”时间单调”</h2><p>雪花 ID 的结构很朴素：<code>1 位符号 + 41 位时间戳 + 10 位机器号 + 12 位序列号</code>。<br>41 位毫秒时间戳够用约 69 年，10 位机器号支持 1024 个节点，12 位序列号支持单毫秒 4096 个。</p>
+<p>问题在于：<strong>41 位时间戳默认时间是单调递增的</strong>。而现实里时间会往回走：</p>
+<ul>
+<li>NTP 微调：小到几毫秒的回拨，最常见</li>
+<li>运维手改系统时间、时区配置错</li>
+<li>容器&#x2F;虚拟机迁移后时钟漂移</li>
+<li>虚机挂起恢复（suspend&#x2F;resume）后时间跳变</li>
+</ul>
+<p>一旦回拨，<code>lastTimestamp</code> 比当前时间大，代码如果只做 <code>ts == lastTimestamp</code> 的序列号自增判断，<br>就会直接拿一个<strong>已经用过的 (时间戳, 机器号, 序列号)</strong> 组合发号——ID 重复。</p>
+<h3 id="处理策略"><a href="#处理策略" class="headerlink" title="处理策略"></a>处理策略</h3><p>按回拨幅度分档处理，比”一律抛异常”更实用：</p>
+<ul>
+<li><strong>小幅回拨（≤ 5ms）</strong>：自旋等到时间追上来，业务无感</li>
+<li><strong>大幅回拨</strong>：直接抛异常，让上层重试或降级到号段模式（美团 Leaf-segment 那种，压根不依赖时间）</li>
+<li><strong>进程重启</strong>：<code>lastTimestamp</code> 是内存变量，重启后归零。如果同一毫秒内重启两次，就可能撞号。<br>生产上要把 <code>lastTimestamp</code> 落盘或写 Redis，启动时校验一次</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SnowflakeIdGenerator</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">WORKER_BITS</span> <span class="operator">=</span> <span class="number">5L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">DATACENTER_BITS</span> <span class="operator">=</span> <span class="number">5L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">SEQUENCE_BITS</span> <span class="operator">=</span> <span class="number">12L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">MAX_WORKER_ID</span> <span class="operator">=</span> ~(-<span class="number">1L</span> &lt;&lt; WORKER_BITS);        <span class="comment">// 31</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">MAX_DATACENTER_ID</span> <span class="operator">=</span> ~(-<span class="number">1L</span> &lt;&lt; DATACENTER_BITS); <span class="comment">// 31</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">WORKER_SHIFT</span> <span class="operator">=</span> SEQUENCE_BITS;                          <span class="comment">// 12</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">DATACENTER_SHIFT</span> <span class="operator">=</span> SEQUENCE_BITS + WORKER_BITS;         <span class="comment">// 17</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">TIMESTAMP_SHIFT</span> <span class="operator">=</span> SEQUENCE_BITS + WORKER_BITS + DATACENTER_BITS; <span class="comment">// 22</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">SEQUENCE_MASK</span> <span class="operator">=</span> ~(-<span class="number">1L</span> &lt;&lt; SEQUENCE_BITS);               <span class="comment">// 4095</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 起始纪元，一旦上线就不要改，改了等于换了一套 ID 空间 */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">EPOCH</span> <span class="operator">=</span> <span class="number">1288834974657L</span>;</span><br><span class="line">    <span class="comment">/** 容忍的小幅回拨，超过就拒绝服务 */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">long</span> <span class="variable">MAX_BACKWARD_MS</span> <span class="operator">=</span> <span class="number">5L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">long</span> workerId;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">long</span> datacenterId;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">long</span> <span class="variable">sequence</span> <span class="operator">=</span> <span class="number">0L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">long</span> <span class="variable">lastTimestamp</span> <span class="operator">=</span> -<span class="number">1L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">public</span> <span class="title function_">SnowflakeIdGenerator</span><span class="params">(<span class="type">long</span> datacenterId, <span class="type">long</span> workerId)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (workerId &lt; <span class="number">0</span> || workerId &gt; MAX_WORKER_ID) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;workerId 必须在 0~&quot;</span> + MAX_WORKER_ID);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (datacenterId &lt; <span class="number">0</span> || datacenterId &gt; MAX_DATACENTER_ID) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;datacenterId 必须在 0~&quot;</span> + MAX_DATACENTER_ID);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">this</span>.datacenterId = datacenterId;</span><br><span class="line">        <span class="built_in">this</span>.workerId = workerId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="type">long</span> <span class="title function_">nextId</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">timestamp</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (timestamp &lt; lastTimestamp) &#123;</span><br><span class="line">            <span class="type">long</span> <span class="variable">offset</span> <span class="operator">=</span> lastTimestamp - timestamp;</span><br><span class="line">            <span class="keyword">if</span> (offset &gt; MAX_BACKWARD_MS) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;时钟回拨 &quot;</span> + offset + <span class="string">&quot;ms，超过阈值，拒绝发号&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 小幅回拨：等到时间追上来（等待两倍偏移量，留一点余量）</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                wait(offset &lt;&lt; <span class="number">1</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                Thread.currentThread().interrupt();</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;发号等待被中断&quot;</span>, e);</span><br><span class="line">            &#125;</span><br><span class="line">            timestamp = System.currentTimeMillis();</span><br><span class="line">            <span class="keyword">if</span> (timestamp &lt; lastTimestamp) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;等待后仍未追上，剩余回拨 &quot;</span> + (lastTimestamp - timestamp) + <span class="string">&quot;ms&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (timestamp == lastTimestamp) &#123;</span><br><span class="line">            sequence = (sequence + <span class="number">1</span>) &amp; SEQUENCE_MASK;</span><br><span class="line">            <span class="keyword">if</span> (sequence == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 同一毫秒 4096 个用完了，等下一毫秒</span></span><br><span class="line">                timestamp = tilNextMillis(lastTimestamp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            sequence = <span class="number">0L</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        lastTimestamp = timestamp;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ((timestamp - EPOCH) &lt;&lt; TIMESTAMP_SHIFT)</span><br><span class="line">                | (datacenterId &lt;&lt; DATACENTER_SHIFT)</span><br><span class="line">                | (workerId &lt;&lt; WORKER_SHIFT)</span><br><span class="line">                | sequence;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">long</span> <span class="title function_">tilNextMillis</span><span class="params">(<span class="type">long</span> last)</span> &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">timestamp</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">while</span> (timestamp &lt;= last) &#123;</span><br><span class="line">            timestamp = System.currentTimeMillis();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> timestamp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>两个细节容易被忽略：</p>
+<ol>
+<li><code>nextId()</code> 必须 <code>synchronized</code>（或改用 CAS&#x2F;AtomicLong），单例前提下才能保证序列号不被并发抢乱。</li>
+<li><code>MAX_BACKWARD_MS</code> 别设太大。设成 1000ms 意味着你愿意为了”不断服”接受一秒的不可控等待，<br>换个说法就是：你在赌这一秒内没有重启、没有别的节点发号。</li>
+</ol>
+<h2 id="二、workerId-冲突：配置写死-埋一颗定时炸弹"><a href="#二、workerId-冲突：配置写死-埋一颗定时炸弹" class="headerlink" title="二、workerId 冲突：配置写死 &#x3D; 埋一颗定时炸弹"></a>二、workerId 冲突：配置写死 &#x3D; 埋一颗定时炸弹</h2><p>10 位机器号看起来是”1024 个节点随便用”，但绝大多数事故是这么来的：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># application.yml —— 上线时从别的服务复制过来的</span></span><br><span class="line"><span class="attr">snowflake:</span></span><br><span class="line">  <span class="attr">worker-id:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">datacenter-id:</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>然后 Docker 起了 3 个副本、K8s 扩到 5 个 Pod，全都读同一份配置，全都用 <code>workerId=1</code>。</p>
+<p><strong>这类问题不会在上线第一天暴露。</strong> 因为冲突要满足两个条件：两个节点在<strong>同一毫秒</strong>内各发一个 ID，<br>并且序列号还撞上。低频业务可能跑一周都不撞，等流量涨上来、日志开始报<br><code>Duplicate entry &#39;xxx&#39; for key &#39;PRIMARY&#39;</code> 时，你才知道有节点重号。</p>
+<h3 id="三个可落地的分配方式"><a href="#三个可落地的分配方式" class="headerlink" title="三个可落地的分配方式"></a>三个可落地的分配方式</h3><p><strong>方式 A：启动时向 Redis 注册，运行时续约</strong>（最通用）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WorkerIdAllocator</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">MAX_WORKER_ID</span> <span class="operator">=</span> <span class="number">31</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">KEY_PREFIX</span> <span class="operator">=</span> <span class="string">&quot;idgen:worker:&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> StringRedisTemplate redis;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="type">int</span> <span class="variable">workerId</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">allocate</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt;= MAX_WORKER_ID; i++) &#123;</span><br><span class="line">            <span class="type">Boolean</span> <span class="variable">ok</span> <span class="operator">=</span> redis.opsForValue()</span><br><span class="line">                    .setIfAbsent(KEY_PREFIX + i, instanceId(), Duration.ofSeconds(<span class="number">60</span>));</span><br><span class="line">            <span class="keyword">if</span> (Boolean.TRUE.equals(ok)) &#123;</span><br><span class="line">                <span class="built_in">this</span>.workerId = i;</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;workerId 已耗尽，请检查是否有僵尸实例占用&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 每 30 秒续约一次，进程被 kill -9 时最多占用 60 秒后自动释放 */</span></span><br><span class="line">    <span class="meta">@Scheduled(fixedDelay = 30_000)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">void</span> <span class="title function_">renew</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (workerId &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            redis.expire(KEY_PREFIX + workerId, Duration.ofSeconds(<span class="number">60</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="title function_">instanceId</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> System.getenv().getOrDefault(<span class="string">&quot;HOSTNAME&quot;</span>, <span class="string">&quot;unknown&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要点：<strong>续约周期必须小于过期时间</strong>，否则网络抖动一下，锁就掉了，另一个实例会抢走同一个号。<br>反过来，过期时间也别设太长，否则 Pod 被强杀后这个号要等很久才能被复用。</p>
+<p><strong>方式 B：按机器标识哈希取模</strong></p>
+<p><code>hash(IP + 端口 + 机器名) % 32</code>。实现零依赖，但<strong>冲突概率不是零</strong>——1024 个号段，<br>32 个 workerId 时按生日问题算，节点一多碰撞概率上升得比直觉快。适合节点数固定且很少的场景，<br>并且必须配一个启动自检：注册表里已经有人用了，就往后顺延。</p>
+<p><strong>方式 C：K8s 场景直接用序号</strong></p>
+<p>StatefulSet + <code>metadata.name</code> 里的序号作为 workerId，或者干脆用 Leaf 的 zookeeper 顺序节点。<br>容器化环境里，<strong>能自动分配就别手工配置</strong>。</p>
+<h2 id="三、前端精度丢失：ID-出了-JVM-就该是字符串"><a href="#三、前端精度丢失：ID-出了-JVM-就该是字符串" class="headerlink" title="三、前端精度丢失：ID 出了 JVM 就该是字符串"></a>三、前端精度丢失：ID 出了 JVM 就该是字符串</h2><p>JS 的 <code>Number</code> 是双精度浮点，安全整数上限是 <code>2^53 - 1 = 9007199254740991</code>（16 位）。<br>而雪花 ID 是 19 位，典型值 <code>1888888888888888888</code>。</p>
+<p>现象很有迷惑性：</p>
+<ul>
+<li>列表页看着正常，因为 <code>JSON.parse</code> 之后精度已经丢了，但显示出来还是”一串数字”</li>
+<li>末几位悄悄变成 0（<code>...888</code> 变成 <code>...000</code>）</li>
+<li>点详情 → 404，因为前端拿错的 ID 去查</li>
+<li>编辑保存 → 把错的 ID 写回库里，数据被”改”到另一个主键上</li>
+</ul>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>字段级最稳：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OrderVO</span> &#123;</span><br><span class="line">    <span class="meta">@JsonSerialize(using = ToStringSerializer.class)</span></span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>全局改造适合新项目，老项目要评估影响面——<strong>所有 Long 都会变成字符串</strong>，包括分页 total、<br>金额、状态码，前端 TS 定义和比较逻辑都得跟着改：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">Jackson2ObjectMapperBuilderCustomizer</span> <span class="title function_">longToString</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> builder -&gt; &#123;</span><br><span class="line">        <span class="type">SimpleModule</span> <span class="variable">module</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SimpleModule</span>();</span><br><span class="line">        <span class="keyword">module</span>.addSerializer(Long.class, ToStringSerializer.instance);</span><br><span class="line">        <span class="keyword">module</span>.addSerializer(Long.TYPE, ToStringSerializer.instance);</span><br><span class="line">        builder.modules(<span class="keyword">module</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>容易漏掉的出口：</p>
+<ul>
+<li>Feign &#x2F; RestTemplate 的<strong>反序列化</strong>端：消费方如果还是 <code>Long</code> 接收，字符串进来会直接转换失败</li>
+<li>MQ 消息体、缓存里的 JSON（比如 Redis 里存的老结构）</li>
+<li>Excel 导出：<code>Long</code> 直接写单元格会被 Excel 显示成科学计数法，得按文本写</li>
+<li>前端 TS：<code>id: string</code>，别图省事写 <code>number</code></li>
+</ul>
+<h2 id="四、怎么验证这三个点"><a href="#四、怎么验证这三个点" class="headerlink" title="四、怎么验证这三个点"></a>四、怎么验证这三个点</h2><p>光靠 code review 发现不了，得有可执行的验证：</p>
+<ol>
+<li><strong>时钟可注入</strong>：把 <code>System.currentTimeMillis()</code> 换成可注入的 <code>Clock</code>，单测里把时间往回拨 1ms、10ms，分别断言”等差等待”和”抛异常”。</li>
+<li><strong>并发去重压测</strong>：单机 4 线程各发 10 万个 ID，塞进 <code>ConcurrentHashMap.newKeySet()</code>，最后断言 size 等于总数。</li>
+<li><strong>主键唯一索引必须留着</strong>：别为了性能把唯一索引去掉。它是这类问题的最后一道兜底——没有它，重号会变成静默的数据覆盖。</li>
+</ol>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>（1）41 位时间戳够用 69 年，但前提是时间单调；小幅回拨等待、大幅回拨拒绝、重启校验 <code>lastTimestamp</code>。</p>
+<p>（2）workerId 不是”配一下就行”，要能被自动申请、自动续约、自动释放；容器环境尤其别写死。</p>
+<p>（3）ID 出了 JVM 就是字符串，浏览器、MQ、Excel 三个出口都要检查。</p>
+<p>如果业务峰值不超过每秒几千个 ID，其实更省心的选择是<strong>号段模式</strong>（Leaf-segment &#x2F; 数据库号段）：<br>一次取 1000 个号在内存里发，不依赖时钟，也不依赖机器号。雪花算法真正划算的场景是高并发、<br>ID 还要能反映时间顺序、且希望完全无中心化依赖——这时候再认真处理上面这三个坑。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/" rel="tag"># 雪花算法</a>
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8FID/" rel="tag"># 分布式ID</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/15/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BC%93%E5%AD%98%E4%BC%AA%E5%85%B1%E4%BA%AB%EF%BC%9F/" rel="prev" title="什么是缓存伪共享？">
+                  <i class="fa fa-angle-left"></i> 什么是缓存伪共享？
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">豫ICP备19043996号 </a>
+  </div>
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">prestu</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><style>
+.prestu-footer-extra{margin-top:6px;font-size:13px;color:#999}
+.prestu-footer-extra span{display:inline-block;margin:0 6px}
+</style>
+<div class="prestu-footer-extra">
+  <span id="htmer_time"></span>
+  <span id="jnkc"></span>
+</div>
+<script>
+  function secondToDate(second) {
+    if (!second) { return 0; }
+    var time = new Array(0, 0, 0, 0, 0);
+    if (second >= 365 * 24 * 3600) { time[0] = parseInt(second / (365 * 24 * 3600)); second %= 365 * 24 * 3600; }
+    if (second >= 24 * 3600) { time[1] = parseInt(second / (24 * 3600)); second %= 24 * 3600; }
+    if (second >= 3600) { time[2] = parseInt(second / 3600); second %= 3600; }
+    if (second >= 60) { time[3] = parseInt(second / 60); second %= 60; }
+    if (second > 0) { time[4] = second; }
+    return time;
+  }
+  function prestuSetTime() {
+    var create_time = Math.round(new Date(Date.UTC(2019, 0, 1, 0, 0, 0)).getTime() / 1000);
+    var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+    var currentTime = secondToDate((timestamp - create_time));
+    var html = '已经运行了：' + currentTime[0] + '年' + currentTime[1] + '天' + currentTime[2] + '时' + currentTime[3] + '分' + currentTime[4] + '秒';
+    var el = document.getElementById('htmer_time');
+    if (el) { el.innerHTML = html; }
+  }
+  function prestuClock() {
+    var el = document.getElementById('jnkc');
+    if (el) { el.innerHTML = new Date().toLocaleString() + ' 星期' + '日一二三四五六'.charAt(new Date().getDay()); }
+  }
+  setInterval(prestuSetTime, 1000);
+  setInterval(prestuClock, 1000);
+  prestuSetTime();
+  prestuClock();
+</script>
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"prestu/prestu.github.io","issue_term":"pathname","theme":"github-light"}</script>
+<script src="/js/third-party/comments/utterances.js" defer></script>
+<script src="/live2dw/lib/L2Dwidget.min.js"></script>
+<script>
+  L2Dwidget.init({
+    "pluginRootPath": "live2dw/",
+    "pluginJsPath": "lib/",
+    "pluginModelPath": "assets/",
+    "tagMode": true,
+    "debug": false,
+    "model": { "jsonPath": "/live2dw/assets/koharu.model.json" },
+    "display": { "position": "right", "width": 120, "height": 180 },
+    "mobile": { "show": false },
+    "log": false
+  });
+</script>
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+<script type="text/javascript" src="/js/src/click_show_text.js"></script>
+
+</body>
+</html>

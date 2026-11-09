@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha256-4Lad8m4ZWW1Lgb9+sMVLYEfnIh7BjV1NQMEe79Pviks=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"prestu.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.29.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":false,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="上一节课已经教大家成功运行起来了django，这节课就教大家开发属于自己的web项目。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初学django-3">
+<meta property="og:url" content="https://prestu.github.io/2020/06/10/%E5%88%9D%E5%AD%A6django-3/index.html">
+<meta property="og:site_name" content="prestu">
+<meta property="og:description" content="上一节课已经教大家成功运行起来了django，这节课就教大家开发属于自己的web项目。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://prestu.github.io/images/pycharm%E5%88%9B%E5%BB%BAapp.png">
+<meta property="og:image" content="https://prestu.github.io/images/%E7%BB%88%E7%AB%AF%E5%88%9B%E5%BB%BAapp.png">
+<meta property="og:image" content="https://prestu.github.io/images/%E4%BC%A0%E5%8F%82%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.png">
+<meta property="article:published_time" content="2020-06-10T03:30:13.000Z">
+<meta property="article:modified_time" content="2026-11-09T01:27:46.000Z">
+<meta property="article:author" content="prestu">
+<meta property="article:tag" content="django">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://prestu.github.io/images/pycharm%E5%88%9B%E5%BB%BAapp.png">
+
+
+<link rel="canonical" href="https://prestu.github.io/2020/06/10/%E5%88%9D%E5%AD%A6django-3/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://prestu.github.io/2020/06/10/%E5%88%9D%E5%AD%A6django-3/","path":"2020/06/10/初学django-3/","title":"初学django-3"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>初学django-3 | prestu</title>
+  
+
+
+
+
+
+
+
+
+  
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-search popup-trigger" aria-label="搜索" role="button">
+      <i class="fa fa-search fa-fw fa-lg"></i>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">prestu</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">like a dog,like a god!</p>
+  </div>
+
+  <div class="site-nav-toggle" aria-label="切换导航栏" role="button">
+      <i class="fa fa-ellipsis fa-fw fa-lg"></i>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-photos"><a href="/photos" rel="section"><i class="fa fa-camera-retro fa-fw"></i>photos</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  
+  <template id="search-popup-template"><div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div></template>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="prestu"
+      src="/photos/images/blog_image.jpg">
+  <p class="site-author-name" itemprop="name">prestu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          友情链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://boctorio.com/" title="https:&#x2F;&#x2F;boctorio.com&#x2F;" rel="noopener" target="_blank">boctorio</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://prestu.github.io/2020/06/10/%E5%88%9D%E5%AD%A6django-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/photos/images/blog_image.jpg">
+      <meta itemprop="name" content="prestu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="prestu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="初学django-3 | prestu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          初学django-3
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-06-10 11:30:13" itemprop="dateCreated datePublished" datetime="2020-06-10T11:30:13+08:00">2020-06-10</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="字数统计">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-lines"></i>
+      </span>
+      <span class="post-meta-item-text">字数统计：</span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>上一节课已经教大家成功运行起来了django，这节课就教大家开发属于自己的web项目。<span id="more"></span></p>
+<p>首先使用pycharm打开上一节创建的django项目，然后点击下面的Terminal 然后输入命令：python manage.py startapp [name] (name是自己创建的app名称，以book为例吧)。</p>
+<p><img src="/images/pycharm%E5%88%9B%E5%BB%BAapp.png"></p>
+<p>也可以在电脑终端进入到的创建的项目中，然后切换一个虚拟环境，再运行：python manage.py startapp book即可创建。</p>
+<p>最后输入命令：deactivate退出虚拟环境。</p>
+<p><img src="/images/%E7%BB%88%E7%AB%AF%E5%88%9B%E5%BB%BAapp.png"></p>
+<p><strong>视图：</strong></p>
+<p>视图一般写在创建的app的views.py中，并且视图的第一个参数永远是request(一个HttpRequest)对象，这个对象存储了请求过来的所有信息，包括携带的参数以及一些头部信息等，在视图中，一般是完成逻辑相关的操作，比如这个请求是添加一篇博客，那么可以通过request来接受这些数据，然后存储到数据库中，最后再把执行的结果返回给浏览器，视图函数的返回值必须是HttpResponse对象或子类的对象。</p>
+<p>如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">book</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="keyword">return</span> HttpResponse(<span class="string">&#x27;图书首页&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>URL映射：</strong></p>
+<p>视图写完以后，要与URL进行映射，也就是用户在浏览器中输入URL时可以到这个视图函数。在用户输入某个URL，请求我们网站时，django就会从项目的urls.py中寻找对应的视图，在urls.py中有一个urlpatterns变量，以后django就会从这个变量中读取所有的匹配规则，匹配规则需要使用django.url中的path函数进行包裹，这个函数会根据传入的参数返回urlpatterns或者是urlResolver的对象。</p>
+<p>如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> book <span class="keyword">import</span> views</span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;admin/&#x27;</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">&#x27;book/&#x27;</span>,views.book)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+
+<p>这样运行django项目后， http:&#x2F; &#x2F;127.0.0.1:8000&#x2F;就访问不了了，因为urls.py中没有对应的url，访问 http:&#x2F; &#x2F;127.0.0.1:8000&#x2F;book&#x2F;就可以看到页面显示”<strong>图书首页</strong>“了。</p>
+<p>有同学可能可能会问，为什么在没有添加上面这些代码时 http:&#x2F; &#x2F;127.0.0.1:8000&#x2F;就可以访问成功呢，其实那是django自带的页面，告诉你的django项目正常运行起来了，这是django的初始状态，没有添加任何url的项目，只要添加任何的url，原始页面就不存在了，如果你想 http:&#x2F;&#x2F; 127.0.0.1:8000&#x2F;该网址可以正常访问，你可以在urlparterns变量中添加一个下面这样的url即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">比如：</span><br><span class="line">path(<span class="string">&#x27;&#x27;</span>,views.book)</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>URL中添加参数：</strong></p>
+<p><strong>url映射：</strong></p>
+<p>1.为什么回去urls.py文件中去寻找映射呢”</p>
+<p>是因为在setting,py文件中配置了’ROOT_URLCONF’为’urls.py’。这样django的url都会去urls.py中去寻找。</p>
+<p>2.要记住在’urls.py’中的映射，都要放在’urlpatterns’这个变量中。</p>
+<p><strong>url传递参数</strong>：</p>
+<p>1.采用在url中使用变量的方式：在path的第一个参数中，使用’&lt;参数名&gt;’的方式可以传递参数。然后在视图函数中也要写一个函数，视图函数中的函数必须和url中的参数名称保持一致，不然找不到这个这个参数，另外，url中可以传递多个参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#views.py</span></span><br><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">book</span>(<span class="params">request,book_id</span>):</span><br><span class="line">    text=<span class="string">&#x27;您的图书代码是:%s&#x27;</span>%(book_id)</span><br><span class="line">    <span class="keyword">return</span> HttpResponse(text)</span><br><span class="line"></span><br><span class="line"><span class="comment">#urls.py</span></span><br><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> book <span class="keyword">import</span> views</span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;admin/&#x27;</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">&#x27;book/&lt;book_id&gt;/&#x27;</span>,views.book),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+
+<p>输入http:&#x2F; &#x2F;127.0.0.1:8000&#x2F;book&#x2F;&lt; id &gt;即可访问。(‘&lt;&gt;’不用加，id取任意值)</p>
+<p><img src="/images/%E4%BC%A0%E5%8F%82%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.png"></p>
+<p>2.采用查询字符串的方式：在url中，不需要单独的匹配查询字符串的部分.只需要在视图函数中使用’request.GET.get(‘参数名称’)’的方式来获取。示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#views.py</span></span><br><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">book</span>(<span class="params">request</span>):</span><br><span class="line">    book_id=request.GET.get(<span class="string">&#x27;id&#x27;</span>)</span><br><span class="line">    <span class="comment">#或者book_id=request.GET[&#x27;id&#x27;]</span></span><br><span class="line">    text=<span class="string">&#x27;您的图书代码是:%s&#x27;</span>%(book_id)</span><br><span class="line">    <span class="keyword">return</span> HttpResponse(text)</span><br><span class="line"></span><br><span class="line"><span class="comment">#urls.py</span></span><br><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> book <span class="keyword">import</span> views</span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;admin/&#x27;</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">&#x27;book/&#x27;</span>,views.book),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+
+<p>输入http:&#x2F; &#x2F;127.0.0.1:8000&#x2F;book&#x2F;? id &#x3D;&lt; num &gt;即可访问。(‘&lt;&gt;’不用加，num取任意值)</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/django/" rel="tag"># django</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/06/09/%E5%88%9D%E5%AD%A6django-2/" rel="prev" title="初学django-2">
+                  <i class="fa fa-angle-left"></i> 初学django-2
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/06/11/%E5%85%B3%E4%BA%8Edjango%E4%B8%AD%E5%87%BA%E7%8E%B0no-such-table-auth-user%E9%94%99%E8%AF%AF%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/" rel="next" title="关于django中出现no such table: auth_user错误的解决办法">
+                  关于django中出现no such table: auth_user错误的解决办法 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">豫ICP备19043996号 </a>
+  </div>
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">prestu</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div><style>
+.prestu-footer-extra{margin-top:6px;font-size:13px;color:#999}
+.prestu-footer-extra span{display:inline-block;margin:0 6px}
+</style>
+<div class="prestu-footer-extra">
+  <span id="htmer_time"></span>
+  <span id="jnkc"></span>
+</div>
+<script>
+  function secondToDate(second) {
+    if (!second) { return 0; }
+    var time = new Array(0, 0, 0, 0, 0);
+    if (second >= 365 * 24 * 3600) { time[0] = parseInt(second / (365 * 24 * 3600)); second %= 365 * 24 * 3600; }
+    if (second >= 24 * 3600) { time[1] = parseInt(second / (24 * 3600)); second %= 24 * 3600; }
+    if (second >= 3600) { time[2] = parseInt(second / 3600); second %= 3600; }
+    if (second >= 60) { time[3] = parseInt(second / 60); second %= 60; }
+    if (second > 0) { time[4] = second; }
+    return time;
+  }
+  function prestuSetTime() {
+    var create_time = Math.round(new Date(Date.UTC(2019, 0, 1, 0, 0, 0)).getTime() / 1000);
+    var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+    var currentTime = secondToDate((timestamp - create_time));
+    var html = '已经运行了：' + currentTime[0] + '年' + currentTime[1] + '天' + currentTime[2] + '时' + currentTime[3] + '分' + currentTime[4] + '秒';
+    var el = document.getElementById('htmer_time');
+    if (el) { el.innerHTML = html; }
+  }
+  function prestuClock() {
+    var el = document.getElementById('jnkc');
+    if (el) { el.innerHTML = new Date().toLocaleString() + ' 星期' + '日一二三四五六'.charAt(new Date().getDay()); }
+  }
+  setInterval(prestuSetTime, 1000);
+  setInterval(prestuClock, 1000);
+  prestuSetTime();
+  prestuClock();
+</script>
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"prestu/prestu.github.io","issue_term":"pathname","theme":"github-light"}</script>
+<script src="/js/third-party/comments/utterances.js" defer></script>
+<script src="/live2dw/lib/L2Dwidget.min.js"></script>
+<script>
+  L2Dwidget.init({
+    "pluginRootPath": "live2dw/",
+    "pluginJsPath": "lib/",
+    "pluginModelPath": "assets/",
+    "tagMode": true,
+    "debug": false,
+    "model": { "jsonPath": "/live2dw/assets/koharu.model.json" },
+    "display": { "position": "right", "width": 120, "height": 180 },
+    "mobile": { "show": false },
+    "log": false
+  });
+</script>
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+<script type="text/javascript" src="/js/src/click_show_text.js"></script>
+
+</body>
+</html>
